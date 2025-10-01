@@ -312,31 +312,36 @@ class DraftApp {
             const frame = document.createElement('div');
             frame.className = 'squadra-frame';
             frame.id = `roster-${squadra.replace(/\s/g, '-')}`;
-            
-            const title = document.createElement('h4');
-            title.textContent = squadra;
-            frame.appendChild(title);
-            
+
             ['G', 'A', 'C'].forEach(ruolo => {
                 const max = { 'G': 5, 'A': 5, 'C': 3 }[ruolo];
+                const tripletta = document.createElement('div');
+                tripletta.className = 'tripletta';
+
+                const title = document.createElement('h4');
+                title.textContent = squadra + ' - ' + ruolo;
+                tripletta.appendChild(title);
+
                 const label = document.createElement('div');
                 label.className = 'slot-label';
                 label.textContent = `${ruolo} (${this.contatoriRuoli[squadra][ruolo]}/${max})`;
-                frame.appendChild(label);
-                
+                tripletta.appendChild(label);
+
                 const list = document.createElement('ul');
                 list.className = 'slot-list';
                 list.id = `slots-${squadra.replace(/\s/g, '-')}-${ruolo}`;
-                
+
                 for (let i = 0; i < max; i++) {
                     const li = document.createElement('li');
                     li.className = 'player-slot';
                     li.textContent = '—';
                     list.appendChild(li);
                 }
-                frame.appendChild(list);
+                tripletta.appendChild(list);
+
+                frame.appendChild(tripletta);
             });
-            
+
             this.roseContainer.appendChild(frame);
         });
     }

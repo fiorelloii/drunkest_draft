@@ -196,7 +196,6 @@ header h1 {
 
 /* === APP CONTAINER === */
 #app-container {
-    max-width: 1400px;
     margin: 0 auto;
     padding: var(--spacing-xl);
     width: 100%;

@@ -208,6 +208,19 @@ class DraftApp {
         this.showCurrentPick();
         this.salvaTemporaneo();
         this.showStatus("Draft generato, inizia la selezione.", true);
+
+        // Mostra draft-tab e tabs-bar, nascondi setup-tab
+        const draftTab = document.getElementById('draft-tab');
+        const setupTab = document.getElementById('setup-tab');
+        const tabsBar = document.getElementById('tabs-bar');
+        if (draftTab && setupTab && tabsBar) {
+            draftTab.style.display = 'block';
+            setupTab.style.display = 'none';
+            tabsBar.style.display = '';
+            // Nascondi il tab Setup
+            const setupTabBtn = tabsBar.querySelector('[data-tab="setup-tab"]');
+            if (setupTabBtn) setupTabBtn.style.display = 'none';
+        }
         this.switchTab(document.querySelector('[data-tab="draft-tab"]'));
     }
 
@@ -746,7 +759,39 @@ class DraftApp {
         );
     }
 
-    newDraft() {
+    /**
+     * Avvia un nuovo draft.
+     * @param {boolean} fromWelcomeScreen - se true, salta il popup e non ricarica la pagina
+     */
+    newDraft(fromWelcomeScreen = false) {
+        if (fromWelcomeScreen) {
+            localStorage.removeItem(TEMP_FILE_KEY);
+            // Reset solo lo stato JS, non ricaricare la pagina
+            this.teams = [];
+            this.giocatoriDisponibili = [];
+            this.listaGiocatoriOriginale = [];
+            this.rose = {};
+            this.contatoriRuoli = {};
+            this.draftSequence = [];
+            this.pickData = [];
+            this.pickIndex = 0;
+            this.pickInModifica = null;
+            // Pulisci i campi input
+            if (this.teamEntriesContainer) this.teamEntriesContainer.innerHTML = '';
+            this.setupTeamInputFields();
+            // Mostra solo il setup tab
+            const setupTab = document.getElementById('setup-tab');
+            const draftTab = document.getElementById('draft-tab');
+            const tabsBar = document.getElementById('tabs-bar');
+            if (setupTab && draftTab && tabsBar) {
+                setupTab.style.display = 'block';
+                draftTab.style.display = 'none';
+                tabsBar.style.display = 'none';
+            }
+            this.switchTab(document.querySelector('[data-tab="setup-tab"]'));
+            this.showStatus("Nuovo draft: inserisci le squadre e carica i giocatori.", true);
+            return;
+        }
         if (confirm("Sei sicuro di voler iniziare un nuovo draft?\nTutti i dati non salvati andranno persi.")) {
             localStorage.removeItem(TEMP_FILE_KEY);
             window.location.reload(); // Simplest way to restart a client-side app

@@ -10,8 +10,20 @@
 </head>
 <body>
 
-    <header>
-        <h1>🏀 Fantabasket Draft</h1>
+    <div id="welcome-screen">
+        <div class="welcome-content">
+            <div  aria-label="Logo Drunkest League"><img class="welcome-logo" src="logo2.png"></div>
+            <!-- <h1 class="welcome-title">Drunkest League Draft</h1> -->
+            <div class="welcome-buttons">
+                <button class="welcome-btn" id="btn-nuovo-draft">✨ Nuovo Draft</button>
+                <button class="welcome-btn" id="btn-carica-draft">📂 Carica Draft</button>
+                <button class="welcome-btn" id="btn-guida">📖 Guida</button>
+            </div>
+        </div>
+    </div>
+
+    <header style="display:none">
+        <h1>Drunkest League Draft</h1>
         <div id="menu-bar">
             <button onclick="draftApp.showGuide()" aria-label="Mostra guida">
                 📖 Guida
@@ -30,28 +42,28 @@
         </div>
     </header>
 
-    <div id="app-container">
-        <div class="tabs">
+    <div id="app-container" style="display:none">
+        <div class="tabs" id="tabs-bar" style="display:none">
             <button class="tab-button active" data-tab="setup-tab">Setup</button>
             <button class="tab-button" data-tab="draft-tab">Draft</button>
         </div>
 
-        <div id="setup-tab" class="tab-content active">
-            <h2>Setup Iniziale</h2>
+    <div id="setup-tab" class="tab-content active" style="display:block">
+            <!-- <h2>Setup Iniziale</h2> -->
             <div id="input-frame">
-                <p>Inserisci l'ordine delle 10 squadre:</p>
+                <p>Inserisci l'ordine delle 10 squadre</p>
                 <div id="team-entries-container">
                     </div>
             </div>
             <div id="button-frame">
                 <button onclick="draftApp.shuffleTeams()">Ordine Casuale</button>
                 <input type="file" id="player-file-input" accept=".json" style="display: none;" onchange="draftApp.loadPlayers(event)">
-                <button onclick="document.getElementById('player-file-input').click()">Carica Lista Giocatori (.json)</button>
+                <button onclick="document.getElementById('player-file-input').click()">Carica Lista Giocatori</button>
                 <button onclick="draftApp.generateDraft()">Genera Draft</button>
             </div>
         </div>
 
-        <div id="draft-tab" class="tab-content">
+    <div id="draft-tab" class="tab-content" style="display:none">
             <div id="pick-frame">
                 <p id="pick-label">Pick #0 - Tocca a:</p>
                 <div class="entry-button-frame">
@@ -79,10 +91,52 @@
         </div>
     </div>
 
-    <div id="status-bar">
+    <div id="status-bar" style="display:none">
         <span id="status-text">----- Avvio completato -----</span>
     </div>
 
     <script src="app.js"></script>
+    <script>
+    // Gestione welcome screen e transizione
+    document.addEventListener('DOMContentLoaded', function() {
+        const welcome = document.getElementById('welcome-screen');
+        const app = document.getElementById('app-container');
+        const header = document.querySelector('header');
+        const statusBar = document.getElementById('status-bar');
+        // Bottoni
+        document.getElementById('btn-nuovo-draft').onclick = function() {
+            welcome.style.display = 'none';
+            app.style.display = '';
+            header.style.display = '';
+            statusBar.style.display = '';
+            // Mostra solo il setup tab, nascondi tabs e draft-tab
+            document.getElementById('setup-tab').style.display = 'block';
+            document.getElementById('draft-tab').style.display = 'none';
+            document.getElementById('tabs-bar').style.display = 'none';
+            if(window.draftApp) draftApp.newDraft(true);
+        };
+        document.getElementById('btn-carica-draft').onclick = function() {
+            welcome.style.display = 'none';
+            app.style.display = '';
+            header.style.display = '';
+            statusBar.style.display = '';
+            // Mostra tabs e draft-tab solo se carichi un draft
+            document.getElementById('setup-tab').style.display = 'block';
+            document.getElementById('draft-tab').style.display = 'none';
+            document.getElementById('tabs-bar').style.display = 'none';
+            if(window.draftApp) draftApp.loadDraft();
+        };
+        document.getElementById('btn-guida').onclick = function() {
+            welcome.style.display = 'none';
+            app.style.display = '';
+            header.style.display = '';
+            statusBar.style.display = '';
+            document.getElementById('setup-tab').style.display = 'block';
+            document.getElementById('draft-tab').style.display = 'none';
+            document.getElementById('tabs-bar').style.display = 'none';
+            if(window.draftApp) draftApp.showGuide();
+        };
+    });
+    </script>
 </body>
 </html>

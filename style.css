@@ -1,3 +1,83 @@
+
+/* Stile base per le icone dei bottoni setup */
+.setup-btn-icon {
+    font-size: 1.5em;
+    margin-right: 0.5em;
+    display: inline-flex;
+    align-items: center;
+}
+/* === WELCOME SCREEN === */
+#welcome-screen {
+    min-height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-secondary);
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 9999;
+}
+.welcome-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-2xl);
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+.welcome-logo {
+    height: 11rem;
+}
+.welcome-title {
+    font-size: 2.5rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--nba-blue);
+    text-align: center;
+    letter-spacing: -0.02em;
+}
+.welcome-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    width: 100%;
+}
+.welcome-btn {
+    font-size: 1.5rem;
+    padding: var(--spacing-lg) 0;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, var(--nba-blue), var(--nba-red));
+    color: var(--white);
+    font-weight: var(--font-weight-bold);
+    border: none;
+    box-shadow: var(--shadow-md);
+    cursor: pointer;
+    transition: background var(--transition-base), transform var(--transition-fast);
+    width: 100%;
+}
+.welcome-btn:hover {
+    background: linear-gradient(135deg, var(--nba-red), var(--nba-blue));
+    transform: translateY(-2px) scale(1.03);
+}
+@media (max-width: 600px) {
+    .welcome-content {
+        max-width: 95vw;
+        gap: var(--spacing-xl);
+    }
+    .welcome-title {
+        font-size: 2rem;
+    }
+    .welcome-btn {
+        font-size: 1.1rem;
+        padding: var(--spacing-md) 0;
+    }
+    .welcome-logo {
+        width: 80px;
+        height: 80px;
+    }
+}
 /* ========================================
    NBA FANTABASKET DRAFT - APPLE INSPIRED
    ======================================== */
@@ -197,7 +277,7 @@ header h1 {
 /* === APP CONTAINER === */
 #app-container {
     margin: 0 auto;
-    padding: var(--spacing-xl);
+    padding: var(--spacing-lg);
     width: 100%;
     flex: 1;
 }
@@ -260,7 +340,7 @@ header h1 {
     display: none;
     background-color: var(--bg-primary);
     border-radius: var(--radius-lg);
-    padding: var(--spacing-2xl);
+    padding: var(--spacing-lg);
     box-shadow: var(--shadow-md);
     animation: fadeIn var(--transition-base);
 }
@@ -290,7 +370,7 @@ header h1 {
 
 /* === SETUP TAB === */
 #input-frame {
-    margin-bottom: var(--spacing-2xl);
+    margin-bottom: var(--spacing-md);
 }
 
 #input-frame > p {

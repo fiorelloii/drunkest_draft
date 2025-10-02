@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Applicazione per draft a serpentina - Fantabasket NBA">
     <meta name="theme-color" content="#003DA7">
-    <title>Draft a Serpentina - Fantabasket NBA</title>
+    <title>Drunkest League Draft</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -42,18 +42,17 @@
         </div>
     </header>
 
+
     <div id="app-container" style="display:none">
         <div class="tabs" id="tabs-bar" style="display:none">
             <button class="tab-button active" data-tab="setup-tab">Setup</button>
             <button class="tab-button" data-tab="draft-tab">Draft</button>
         </div>
-
-    <div id="setup-tab" class="tab-content active" style="display:block">
+        <div id="setup-tab" class="tab-content active" style="display:block">
             <!-- <h2>Setup Iniziale</h2> -->
             <div id="input-frame">
                 <p>Inserisci l'ordine delle 10 squadre</p>
-                <div id="team-entries-container">
-                    </div>
+                <div id="team-entries-container"></div>
             </div>
             <div id="button-frame">
                 <button onclick="draftApp.shuffleTeams()">Ordine Casuale</button>
@@ -62,30 +61,33 @@
                 <button onclick="draftApp.generateDraft()">Genera Draft</button>
             </div>
         </div>
+    </div>
 
     <div id="draft-tab" class="tab-content" style="display:none">
-            <div id="pick-frame">
-                <p id="pick-label">Pick #0 - Tocca a:</p>
+        <div id="pick-frame">
+            <p id="pick-info-panel"></p>
+        </div>
+        <div id="main-draft-frame">
+            <div id="picklist-frame">
+                <h3>Pick effettuate</h3>
+                <div id="pick-listbox-container"></div>
+                <div class="btn-frame">
+                    <button onclick="draftApp.undo()">Undo (Ctrl+Z)</button>
+                    <button onclick="draftApp.redo()">Redo (Ctrl+Y)</button>
+                </div>
+            </div>
+            <div id="rose-container">
+                <!-- Le rose delle squadre saranno generate dinamicamente in app.js con la struttura .squadra-frame > .tripletta (h4, .slot-label, .slot-list uno sopra l'altro, triplette affiancate) -->
+            </div>
+            <div id="player-search-frame">
+                <h3>Ricerca Giocatore</h3>
                 <div class="entry-button-frame">
                     <input type="text" id="player-entry" placeholder="Nome giocatore..." list="player-suggestions">
                     <datalist id="player-suggestions"></datalist>
                     <button id="assign-button" onclick="draftApp.assegnaGiocatore()">➕</button>
                 </div>
-            </div>
-
-            <div id="main-draft-frame">
-                <div id="picklist-frame">
-                    <h3>Pick effettuate</h3>
-                    <div id="pick-listbox-container">
-                        </div>
-                    <div class="btn-frame">
-                        <button onclick="draftApp.undo()">Undo (Ctrl+Z)</button>
-                        <button onclick="draftApp.redo()">Redo (Ctrl+Y)</button>
-                    </div>
-                </div>
-
-                <div id="rose-container">
-                    <!-- Le rose delle squadre saranno generate dinamicamente in app.js con la struttura .squadra-frame > .tripletta (h4, .slot-label, .slot-list uno sopra l'altro, triplette affiancate) -->
+                <div id="all-players-list">
+                    <!-- Lista di tutti i giocatori verrà popolata da JS -->
                 </div>
             </div>
         </div>

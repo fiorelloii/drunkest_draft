@@ -1,3 +1,4 @@
+// ...existing code...
 // app.js
 
 const NUM_SQUADRE = 10;
@@ -5,6 +6,25 @@ const NUM_TURNI = 13;
 const TEMP_FILE_KEY = "fantabasket_draft_temp"; // Using localStorage for temp save
 
 class DraftApp {
+    // Popola la lista di tutti i giocatori disponibili nella sezione ricerca
+    updateAllPlayersList() {
+        const container = document.getElementById('all-players-list');
+        if (!container) return;
+        container.innerHTML = '';
+        if (!this.giocatoriDisponibili || this.giocatoriDisponibili.length === 0) {
+            container.innerHTML = '<div class="empty-list">Nessun giocatore disponibile.</div>';
+            return;
+        }
+        const ul = document.createElement('ul');
+        ul.className = 'all-players-ul';
+        this.giocatoriDisponibili.forEach(([nome, ruolo]) => {
+            const li = document.createElement('li');
+            li.className = 'all-players-li';
+            li.textContent = `${nome} (${ruolo})`;
+            ul.appendChild(li);
+        });
+        container.appendChild(ul);
+    }
     constructor() {
         this.undoStack = [];
         this.redoStack = [];
@@ -162,8 +182,6 @@ class DraftApp {
         const file = event.target.files[0];
         if (!file) return;
 
-        // NOTE: This is simplified to expect a JSON file with an array of [Name, Role] tuples.
-        // E.g., [['LeBron James', 'A'], ['Luka Doncic', 'G'], ...]
         const reader = new FileReader();
         reader.onload = (e) => {
             try {
@@ -172,6 +190,7 @@ class DraftApp {
                     this.giocatoriDisponibili = data.map(([nome, ruolo]) => [nome.trim(), ruolo.trim().toUpperCase()]);
                     this.listaGiocatoriOriginale = [...this.giocatoriDisponibili];
                     this.showStatus(`${this.giocatoriDisponibili.length} giocatori caricati.`, true);
+                    this.updateAllPlayersList();
                 } else {
                     throw new Error("Formato JSON non valido. Aspettato un array di giocatori.");
                 }
@@ -207,36 +226,36 @@ class DraftApp {
         this.aggiornaRose();      // Populate the roster frames
         this.showCurrentPick();
         this.salvaTemporaneo();
+        this.updateAllPlayersList();
         this.showStatus("Draft generato, inizia la selezione.", true);
 
         // Mostra draft-tab e tabs-bar, nascondi setup-tab
         const draftTab = document.getElementById('draft-tab');
-        const setupTab = document.getElementById('setup-tab');
-        const tabsBar = document.getElementById('tabs-bar');
-        if (draftTab && setupTab && tabsBar) {
+        const appContainer = document.getElementById('app-container');
+        if (draftTab && appContainer) {
             draftTab.style.display = 'block';
-            setupTab.style.display = 'none';
-            tabsBar.style.display = '';
-            // Nascondi il tab Setup
-            const setupTabBtn = tabsBar.querySelector('[data-tab="setup-tab"]');
-            if (setupTabBtn) setupTabBtn.style.display = 'none';
+            appContainer.style.display = 'none';
         }
-        this.switchTab(document.querySelector('[data-tab="draft-tab"]'));
+
     }
 
     // --- Draft Tab Functions ---
 
     showCurrentPick() {
-        if (this.pickIndex < this.draftSequence.length) {
-            const squadraCorrente = this.draftSequence[this.pickIndex];
-            this.pickLabel.textContent = `Pick #${this.pickIndex + 1} - Tocca a: ${squadraCorrente}`;
-            document.getElementById('assign-button').disabled = false;
-            this.playerEntry.disabled = false;
-        } else {
-            this.pickLabel.textContent = "Draft completato.";
-            document.getElementById('assign-button').disabled = true;
-            this.playerEntry.disabled = true;
-            this.showStatus("Draft completato con successo!", true);
+        // Mostra la pick info in alto centrale
+        const pickInfoPanel = document.getElementById('pick-info-panel');
+        if (pickInfoPanel) {
+            if (this.pickIndex < this.draftSequence.length) {
+                const squadraCorrente = this.draftSequence[this.pickIndex];
+                pickInfoPanel.textContent = `Pick #${this.pickIndex + 1} - Tocca a: ${squadraCorrente}`;
+                document.getElementById('assign-button').disabled = false;
+                this.playerEntry.disabled = false;
+            } else {
+                pickInfoPanel.textContent = "Draft completato.";
+                document.getElementById('assign-button').disabled = true;
+                this.playerEntry.disabled = true;
+                this.showStatus("Draft completato con successo!", true);
+            }
         }
         this.updatePickListbox();
     }

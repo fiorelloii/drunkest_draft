@@ -64,12 +64,30 @@ class DraftApp {
             li.appendChild(team);
             li.addEventListener('click', () => {
                 this.playerEntry.value = nome;
+                // Trova la squadra a cui verrà assegnato il giocatore
+                const squadraDest = this.draftSequence[this.pickInModifica !== null ? this.pickInModifica : this.pickIndex];
                 this.assegnaGiocatore();
+                this.updateAllPlayersList(this.playerEntry.value);
+                // Scroll orizzontale sulla squadra-frame assegnata
+                setTimeout(() => {
+                    const frame = document.getElementById(`roster-${squadraDest.replace(/\s/g, '-')}`);
+                    if (frame && frame.scrollIntoView) {
+                        frame.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                    }
+                }, 100);
             });
             li.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                     this.playerEntry.value = nome;
+                    const squadraDest = this.draftSequence[this.pickInModifica !== null ? this.pickInModifica : this.pickIndex];
                     this.assegnaGiocatore();
+                    this.updateAllPlayersList(this.playerEntry.value);
+                    setTimeout(() => {
+                        const frame = document.getElementById(`roster-${squadraDest.replace(/\s/g, '-')}`);
+                        if (frame && frame.scrollIntoView) {
+                            frame.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                        }
+                    }, 100);
                 }
             });
             ul.appendChild(li);
@@ -399,20 +417,31 @@ class DraftApp {
 
     setupRoseDisplay() {
         this.roseContainer.innerHTML = '';
+        // Crea un contenitore flex per tutte le squadre su una riga
+        const rowDiv = document.createElement('div');
+        rowDiv.style.display = 'flex';
+        rowDiv.style.flexDirection = 'row';
+        rowDiv.style.gap = 'var(--spacing-md)';
+        rowDiv.style.width = '100%';
+        rowDiv.style.overflowX = 'auto';
+
         this.teams.forEach(squadra => {
             const frame = document.createElement('div');
             frame.className = 'squadra-frame';
             frame.id = `roster-${squadra.replace(/\s/g, '-')}`;
+
+            // Titolo squadra in cima
+            const teamTitle = document.createElement('h4');
+            teamTitle.className = 'squadra-title';
+            teamTitle.textContent = squadra;
+            frame.appendChild(teamTitle);
 
             ['G', 'A', 'C'].forEach(ruolo => {
                 const max = { 'G': 5, 'A': 5, 'C': 3 }[ruolo];
                 const tripletta = document.createElement('div');
                 tripletta.className = 'tripletta';
 
-                const title = document.createElement('h4');
-                title.textContent = squadra + ' - ' + ruolo;
-                tripletta.appendChild(title);
-
+                // Niente h4 qui, solo label e lista
                 const label = document.createElement('div');
                 label.className = 'slot-label';
                 label.textContent = `${ruolo} (${this.contatoriRuoli[squadra][ruolo]}/${max})`;
@@ -425,7 +454,7 @@ class DraftApp {
                 for (let i = 0; i < max; i++) {
                     const li = document.createElement('li');
                     li.className = 'player-slot';
-                    li.textContent = '';
+                    li.textContent = '—';
                     list.appendChild(li);
                 }
                 tripletta.appendChild(list);
@@ -433,8 +462,9 @@ class DraftApp {
                 frame.appendChild(tripletta);
             });
 
-            this.roseContainer.appendChild(frame);
+            rowDiv.appendChild(frame);
         });
+        this.roseContainer.appendChild(rowDiv);
     }
 
     aggiornaRose() {

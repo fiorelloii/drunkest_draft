@@ -6,21 +6,72 @@ const NUM_TURNI = 13;
 const TEMP_FILE_KEY = "fantabasket_draft_temp"; // Using localStorage for temp save
 
 class DraftApp {
+    /**
+     * Salva lo stato attuale del draft in un file JSON scaricabile.
+     * Il file risultante può essere ricaricato tramite loadDraft.
+     */
+    saveDraft() {
+        const data = {
+            rose: this.rose,
+            contatoriRuoli: this.contatoriRuoli,
+            giocatoriDisponibili: this.giocatoriDisponibili,
+            draftSequence: this.draftSequence,
+            pickData: this.pickData,
+            pickIndex: this.pickIndex,
+            listaGiocatoriOriginale: this.listaGiocatoriOriginale,
+            teams: this.teams
+        };
+        const json = JSON.stringify(data, null, 2);
+        const blob = new Blob([json], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `draft_fantabasket_${new Date().toISOString().slice(0, 10)}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        this.showStatus("Draft salvato correttamente.", true);
+    }
     // Popola la lista di tutti i giocatori disponibili nella sezione ricerca
-    updateAllPlayersList() {
+    updateAllPlayersList(filter = '') {
         const container = document.getElementById('all-players-list');
         if (!container) return;
         container.innerHTML = '';
-        if (!this.giocatoriDisponibili || this.giocatoriDisponibili.length === 0) {
-            container.innerHTML = '<div class="empty-list">Nessun giocatore disponibile.</div>';
+        let players = this.giocatoriDisponibili;
+        if (filter && filter.length > 0) {
+            players = players.filter(([nome, ruolo, squadra]) => nome.toLowerCase().includes(filter.toLowerCase()));
+        }
+        if (!players || players.length === 0) {
+            container.innerHTML = '<div class="empty-list">Nessun giocatore trovato.</div>';
             return;
         }
         const ul = document.createElement('ul');
         ul.className = 'all-players-ul';
-        this.giocatoriDisponibili.forEach(([nome, ruolo]) => {
+        players.forEach(([nome, ruolo, squadra]) => {
             const li = document.createElement('li');
-            li.className = 'all-players-li';
-            li.textContent = `${nome} (${ruolo})`;
+            li.className = 'all-players-li player-slot';
+            li.tabIndex = 0;
+            li.style.cursor = 'pointer';
+            // Nome e ruolo
+            const main = document.createElement('div');
+            main.textContent = `${nome} (${ruolo})`;
+            // Squadra in piccolo
+            const team = document.createElement('div');
+            team.className = 'player-team-label';
+            team.textContent = squadra ? squadra : '';
+            li.appendChild(main);
+            li.appendChild(team);
+            li.addEventListener('click', () => {
+                this.playerEntry.value = nome;
+                this.assegnaGiocatore();
+            });
+            li.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    this.playerEntry.value = nome;
+                    this.assegnaGiocatore();
+                }
+            });
             ul.appendChild(li);
         });
         container.appendChild(ul);
@@ -64,7 +115,10 @@ class DraftApp {
             button.addEventListener('click', () => this.switchTab(button));
         });
         document.addEventListener('keydown', (e) => this.handleGlobalKeydown(e));
-        this.playerEntry.addEventListener('input', () => this.autocomplete());
+        this.playerEntry.addEventListener('input', () => {
+            this.updateAllPlayersList(this.playerEntry.value);
+            this.autocomplete();
+        });
         // Right-click listener for picklist (simplified context menu)
         this.pickListContainer.addEventListener('contextmenu', (e) => this.showPickContextMenu(e));
     }
@@ -187,7 +241,12 @@ class DraftApp {
             try {
                 const data = JSON.parse(e.target.result);
                 if (Array.isArray(data)) {
-                    this.giocatoriDisponibili = data.map(([nome, ruolo]) => [nome.trim(), ruolo.trim().toUpperCase()]);
+                    // Supporta sia [nome, ruolo] che [nome, ruolo, squadra]
+                    this.giocatoriDisponibili = data.map(arr => [
+                        (arr[0] || '').trim(),
+                        (arr[1] || '').trim().toUpperCase(),
+                        arr[2] ? arr[2].trim() : ''
+                    ]);
                     this.listaGiocatoriOriginale = [...this.giocatoriDisponibili];
                     this.showStatus(`${this.giocatoriDisponibili.length} giocatori caricati.`, true);
                     this.updateAllPlayersList();
@@ -248,11 +307,11 @@ class DraftApp {
             if (this.pickIndex < this.draftSequence.length) {
                 const squadraCorrente = this.draftSequence[this.pickIndex];
                 pickInfoPanel.textContent = `Pick #${this.pickIndex + 1} - Tocca a: ${squadraCorrente}`;
-                document.getElementById('assign-button').disabled = false;
+                // document.getElementById('assign-button').disabled = false;
                 this.playerEntry.disabled = false;
             } else {
                 pickInfoPanel.textContent = "Draft completato.";
-                document.getElementById('assign-button').disabled = true;
+                // document.getElementById('assign-button').disabled = true;
                 this.playerEntry.disabled = true;
                 this.showStatus("Draft completato con successo!", true);
             }
@@ -366,7 +425,7 @@ class DraftApp {
                 for (let i = 0; i < max; i++) {
                     const li = document.createElement('li');
                     li.className = 'player-slot';
-                    li.textContent = '—';
+                    li.textContent = '';
                     list.appendChild(li);
                 }
                 tripletta.appendChild(list);
@@ -394,7 +453,7 @@ class DraftApp {
             
             // Clear all slots
             document.querySelectorAll(`#roster-${squadra.replace(/\s/g, '-')} .player-slot`).forEach(slot => {
-                slot.textContent = '—';
+                slot.textContent = '';
             });
 
             // Fill slots

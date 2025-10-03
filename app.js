@@ -1,4 +1,3 @@
-// ...existing code...
 // app.js
 
 const NUM_SQUADRE = 10;
@@ -6,6 +5,42 @@ const NUM_TURNI = 13;
 const TEMP_FILE_KEY = "fantabasket_draft_temp"; // Using localStorage for temp save
 
 class DraftApp {
+
+    // Aggiorna il pannello del giocatore selezionato
+    updateSelectedPlayerPanel() {
+        const panel = document.getElementById('selected-player-panel');
+        if (!panel) return;
+        const nome = this.playerEntry.value.trim();
+        let player = null;
+        if (nome) {
+            player = this.giocatoriDisponibili.find(([n]) => n.toLowerCase() === nome.toLowerCase());
+            if (!player) {
+                player = (this.listaGiocatoriOriginale || []).find(([n]) => n.toLowerCase() === nome.toLowerCase());
+            }
+        }
+        let n, ruolo, squadra, imgUrl;
+        if (player) {
+            [n, ruolo, squadra, imgUrl] = player;
+        } else {
+            n = 'Giocatore';
+            ruolo = 'Ruolo';
+            squadra = 'Squadra';
+            imgUrl = '';
+        }
+        panel.innerHTML = `
+            <div class="selected-player-frame">
+                <div class="selected-player-img-wrap">
+                    ${imgUrl ? `<img src="${imgUrl}" alt="${n}" class="selected-player-img" />` : ''}
+                </div>
+                <div class="selected-player-info">
+                    <div class="selected-player-name">${n}</div>
+                    <div class="selected-player-ruolo">${ruolo || ''}</div>
+                    <div class="selected-player-squadra">${squadra || ''}</div>
+                </div>
+            </div>
+        `;
+    }
+
     /**
      * Salva lo stato attuale del draft in un file JSON scaricabile.
      * Il file risultante può essere ricaricato tramite loadDraft.
@@ -54,13 +89,13 @@ class DraftApp {
             li.tabIndex = 0;
             li.style.cursor = 'pointer';
             // Immagine giocatore (se presente)
-            if (imgUrl) {
-                const img = document.createElement('img');
-                img.src = imgUrl;
-                img.alt = nome;
-                img.className = 'player-img';
-                li.appendChild(img);
-            }
+            // if (imgUrl) {
+            //     const img = document.createElement('img');
+            //     img.src = imgUrl;
+            //     img.alt = nome;
+            //     img.className = 'player-img';
+            //     li.appendChild(img);
+            // }
             // Nome e ruolo
             const main = document.createElement('div');
             main.textContent = `${nome} (${ruolo})`;
@@ -72,6 +107,7 @@ class DraftApp {
             li.appendChild(team);
             li.addEventListener('click', () => {
                 this.playerEntry.value = nome;
+                this.updateSelectedPlayerPanel();
                 // Trova la squadra a cui verrà assegnato il giocatore
                 const squadraDest = this.draftSequence[this.pickInModifica !== null ? this.pickInModifica : this.pickIndex];
                 this.assegnaGiocatore();
@@ -86,6 +122,7 @@ class DraftApp {
             li.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                     this.playerEntry.value = nome;
+                    this.updateSelectedPlayerPanel();
                     const squadraDest = this.draftSequence[this.pickInModifica !== null ? this.pickInModifica : this.pickIndex];
                     this.assegnaGiocatore();
                     this.updateAllPlayersList(this.playerEntry.value);
@@ -119,6 +156,8 @@ class DraftApp {
         this.setupTeamInputFields();
         this.askLoadTemp();
         this.showStatus("----- Avvio completato -----", false);
+        // Mostra il frame vuoto all'avvio
+        this.updateSelectedPlayerPanel();
     }
 
     // --- DOM Setup & Event Listeners ---
@@ -143,6 +182,7 @@ class DraftApp {
         this.playerEntry.addEventListener('input', () => {
             this.updateAllPlayersList(this.playerEntry.value);
             this.autocomplete();
+            this.updateSelectedPlayerPanel();
         });
         // Right-click listener for picklist (simplified context menu)
         this.pickListContainer.addEventListener('contextmenu', (e) => this.showPickContextMenu(e));
@@ -332,12 +372,10 @@ class DraftApp {
         if (pickInfoPanel) {
             if (this.pickIndex < this.draftSequence.length) {
                 const squadraCorrente = this.draftSequence[this.pickIndex];
-                pickInfoPanel.textContent = `Pick #${this.pickIndex + 1} - Tocca a: ${squadraCorrente}`;
-                // document.getElementById('assign-button').disabled = false;
+                pickInfoPanel.innerHTML = `Pick #${this.pickIndex + 1} - Tocca a: <span class="pick-info-squadra">${squadraCorrente}</span>`;
                 this.playerEntry.disabled = false;
             } else {
                 pickInfoPanel.textContent = "Draft completato.";
-                // document.getElementById('assign-button').disabled = true;
                 this.playerEntry.disabled = true;
                 this.showStatus("Draft completato con successo!", true);
             }
@@ -364,7 +402,7 @@ class DraftApp {
 
     assegnaGiocatore() {
         this.saveState();
-        
+
         let idx;
         if (this.pickInModifica !== null) {
             idx = this.pickInModifica;
@@ -385,7 +423,7 @@ class DraftApp {
 
         const [nome, ruolo] = corrispondenti;
         const maxRuoli = { "G": 5, "A": 5, "C": 3 };
-        
+
         // Check role limits
         if (this.contatoriRuoli[squadra][ruolo] >= maxRuoli[ruolo]) {
             this.showStatus(`${squadra} ha già il massimo di ${ruolo} (${maxRuoli[ruolo]}).`, true);
@@ -393,27 +431,28 @@ class DraftApp {
         }
 
         // --- Perform assignment ---
-        
+
         // 1. Update roster and counters
         this.rose[squadra].push([nome, ruolo]);
         this.contatoriRuoli[squadra][ruolo]++;
-        
+
         // 2. Remove from available players
         const playerIndex = this.giocatoriDisponibili.findIndex(([n, r]) => n === nome && r === ruolo);
         this.giocatoriDisponibili.splice(playerIndex, 1);
-        
+
         // 3. Update pick data
         this.pickData[idx].giocatore = [nome, ruolo];
-        
+
         // 4. Update index/mode
         if (this.pickInModifica !== null) {
             this.pickInModifica = null;
         } else {
             this.pickIndex++;
         }
-        
+
         // 5. Clean up UI and save
         this.playerEntry.value = '';
+        // this.updateSelectedPlayerPanel();
         this.playerSuggestions.innerHTML = '';
         this.aggiornaRose();
         this.showCurrentPick();
@@ -480,7 +519,7 @@ class DraftApp {
 
         this.teams.forEach(squadra => {
             const contatoriAssegnati = { "G": 0, "A": 0, "C": 0 };
-            
+
             // Reset counters display
             const counterLabels = document.querySelectorAll(`#roster-${squadra.replace(/\s/g, '-')} .slot-label`);
             counterLabels.forEach(label => {
@@ -488,7 +527,7 @@ class DraftApp {
                 const max = { 'G': 5, 'A': 5, 'C': 3 }[role];
                 label.textContent = `${role} (0/${max})`;
             });
-            
+
             // Clear all slots
             document.querySelectorAll(`#roster-${squadra.replace(/\s/g, '-')} .player-slot`).forEach(slot => {
                 slot.textContent = '';
@@ -516,7 +555,7 @@ class DraftApp {
 
     updatePickListbox() {
         this.pickListContainer.innerHTML = '';
-        
+
         let roseTemp = {};
         for (const team in this.rose) {
             roseTemp[team] = [...this.rose[team]]; // Deep copy of the player lists
@@ -526,7 +565,7 @@ class DraftApp {
             const item = document.createElement('div');
             item.className = 'pick-item';
             item.dataset.index = i;
-            
+
             let text;
             if (this.pickInModifica === i) {
                 text = `Pick #${i + 1}: ${squadra} - ?? (in modifica)`;
@@ -538,9 +577,9 @@ class DraftApp {
             } else {
                 text = `Pick #${i + 1}: ${squadra} - --`;
             }
-            
+
             item.textContent = text;
-            
+
             if (i === this.pickIndex && this.pickInModifica === null) {
                 item.classList.add('current');
             }
@@ -561,10 +600,10 @@ class DraftApp {
         if (!item) return;
 
         const idx = parseInt(item.dataset.index);
-        
+
         // Simple context menu using prompt/confirm
         const action = prompt(`Azioni per Pick #${idx + 1}:\n1. Ricomincia da qui\n2. Modifica pick\n\nInserisci 1 o 2:`);
-        
+
         if (action === '1') {
             this.ricominciaDaPick(idx);
         } else if (action === '2') {
@@ -578,7 +617,7 @@ class DraftApp {
         if (!confirm(`Sei sicuro di voler ricominciare dalla Pick #${idx + 1}? Tutte le pick successive verranno annullate.`)) return;
 
         this.saveState();
-        
+
         // Restore all players from idx onwards
         for (let i = idx; i < this.draftSequence.length; i++) {
             const pick = this.pickData[i];
@@ -586,13 +625,13 @@ class DraftApp {
             if (g !== null) {
                 const squadra = pick.squadra;
                 const [nome, ruolo] = g;
-                
+
                 // Remove player from roster
                 const rosterIndex = this.rose[squadra].findIndex(([n, r]) => n === nome && r === ruolo);
                 if (rosterIndex !== -1) {
                     this.rose[squadra].splice(rosterIndex, 1);
                 }
-                
+
                 this.contatoriRuoli[squadra][ruolo]--;
                 this.giocatoriDisponibili.push([nome, ruolo]);
                 pick.giocatore = null;
@@ -670,7 +709,7 @@ class DraftApp {
         this.pickData = state.pickData;
         this.pickIndex = state.pickIndex;
         // Re-generate teams list for UI setup if needed
-        this.teams = [...new Set(this.draftSequence)]; 
+        this.teams = [...new Set(this.draftSequence)];
     }
 
     saveState() {
@@ -777,7 +816,7 @@ class DraftApp {
         this.showCurrentPick();
         this.playerEntry.disabled = false;
         this.switchTab(document.querySelector('[data-tab="draft-tab"]'));
-        
+
         this.undoStack = [];
         this.redoStack = [];
     }
@@ -793,7 +832,7 @@ class DraftApp {
             listaGiocatoriOriginale: this.listaGiocatoriOriginale,
             teams: this.teams
         };
-        
+
         // Browser API to prompt user to save a file
         const json = JSON.stringify(data, null, 2);
         const blob = new Blob([json], { type: "application/json" });
@@ -805,7 +844,7 @@ class DraftApp {
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-        
+
         this.showStatus("Draft salvato correttamente.", true);
     }
 
@@ -858,12 +897,12 @@ class DraftApp {
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-        
+
         this.showStatus("Rose esportate con successo.", true);
     }
 
     // --- Other Menu Functions ---
-    
+
     showGuide() {
         alert(
             "COME FUNZIONA IL DRAFT:\n" +
@@ -928,7 +967,7 @@ class DraftApp {
         this.contatoriRuoli = this.teams.reduce((acc, team) => ({ ...acc, [team]: { "G": 0, "A": 0, "C": 0 } }), {});
         this.giocatoriDisponibili = [...this.listaGiocatoriOriginale];
         this.giocatoriDisponibili.sort();
-        
+
         this.pickData = this.draftSequence.map(s => ({ squadra: s, giocatore: null }));
         this.pickIndex = 0;
         this.pickInModifica = null;

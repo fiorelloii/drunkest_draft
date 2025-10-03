@@ -1,0 +1,682 @@
+[
+  [
+    "Stephen Curry",
+    "G"
+  ],
+  [
+    "Damian Lillard",
+    "G"
+  ],
+  [
+    "Kyrie Irving",
+    "G"
+  ],
+  [
+    "Chris Paul",
+    "G"
+  ],
+  [
+    "Ja Morant",
+    "G"
+  ],
+  [
+    "Trae Young",
+    "G"
+  ],
+  [
+    "De'Aaron Fox",
+    "G"
+  ],
+  [
+    "Derrick Rose",
+    "G"
+  ],
+  [
+    "Kemba Walker",
+    "G"
+  ],
+  [
+    "Malcolm Brogdon",
+    "G"
+  ],
+  [
+    "Fred VanVleet",
+    "G"
+  ],
+  [
+    "Lonzo Ball",
+    "G"
+  ],
+  [
+    "Darius Garland",
+    "G"
+  ],
+  [
+    "CJ McCollum",
+    "G"
+  ],
+  [
+    "Jrue Holiday",
+    "G"
+  ],
+  [
+    "Dejounte Murray",
+    "G"
+  ],
+  [
+    "Shai Gilgeous-Alexander",
+    "G"
+  ],
+  [
+    "Tyrese Haliburton",
+    "G"
+  ],
+  [
+    "Jordan Clarkson",
+    "G"
+  ],
+  [
+    "Terry Rozier",
+    "G"
+  ],
+  [
+    "Jalen Brunson",
+    "G"
+  ],
+  [
+    "Tyus Jones",
+    "G"
+  ],
+  [
+    "Rajon Rondo",
+    "G"
+  ],
+  [
+    "Dillon Brooks",
+    "G"
+  ],
+  [
+    "Monte Morris",
+    "G"
+  ],
+  [
+    "Patrick Beverley",
+    "G"
+  ],
+  [
+    "Delon Wright",
+    "G"
+  ],
+  [
+    "Elfrid Payton",
+    "G"
+  ],
+  [
+    "George Hill",
+    "G"
+  ],
+  [
+    "Dennis Schröder",
+    "G"
+  ],
+  [
+    "Malik Monk",
+    "G"
+  ],
+  [
+    "Immanuel Quickley",
+    "G"
+  ],
+  [
+    "Jamal Murray",
+    "G"
+  ],
+  [
+    "Derrick White",
+    "G"
+  ],
+  [
+    "Devonte' Graham",
+    "G"
+  ],
+  [
+    "Jalen Green",
+    "G"
+  ],
+  [
+    "LaMelo Ball",
+    "G"
+  ],
+  [
+    "Josh Giddey",
+    "G"
+  ],
+  [
+    "Cade Cunningham",
+    "G"
+  ],
+  [
+    "Scoot Henderson",
+    "G"
+  ],
+  [
+    "Anthony Edwards",
+    "G"
+  ],
+  [
+    "Eric Gordon",
+    "G"
+  ],
+  [
+    "Marcus Smart",
+    "G"
+  ],
+  [
+    "Lonnie Walker IV",
+    "G"
+  ],
+  [
+    "Gary Payton II",
+    "G"
+  ],
+  [
+    "Shake Milton",
+    "G"
+  ],
+  [
+    "Tyler Herro",
+    "G"
+  ],
+  [
+    "Luguentz Dort",
+    "G"
+  ],
+  [
+    "Brandon Ingram",
+    "A"
+  ],
+  [
+    "Jimmy Butler",
+    "A"
+  ],
+  [
+    "Kawhi Leonard",
+    "A"
+  ],
+  [
+    "Jayson Tatum",
+    "A"
+  ],
+  [
+    "Jaylen Brown",
+    "A"
+  ],
+  [
+    "DeMar DeRozan",
+    "A"
+  ],
+  [
+    "Zach LaVine",
+    "A"
+  ],
+  [
+    "Paul George",
+    "A"
+  ],
+  [
+    "Khris Middleton",
+    "A"
+  ],
+  [
+    "Pascal Siakam",
+    "A"
+  ],
+  [
+    "Mikal Bridges",
+    "A"
+  ],
+  [
+    "OG Anunoby",
+    "A"
+  ],
+  [
+    "Michael Porter Jr.",
+    "A"
+  ],
+  [
+    "Julius Randle",
+    "A"
+  ],
+  [
+    "Bojan Bogdanovic",
+    "A"
+  ],
+  [
+    "Tobias Harris",
+    "A"
+  ],
+  [
+    "Norman Powell",
+    "A"
+  ],
+  [
+    "Harrison Barnes",
+    "A"
+  ],
+  [
+    "Dorian Finney-Smith",
+    "A"
+  ],
+  [
+    "Joe Ingles",
+    "A"
+  ],
+  [
+    "Jae Crowder",
+    "A"
+  ],
+  [
+    "Thaddeus Young",
+    "A"
+  ],
+  [
+    "Robert Covington",
+    "A"
+  ],
+  [
+    "Justise Winslow",
+    "A"
+  ],
+  [
+    "Wesley Matthews",
+    "A"
+  ],
+  [
+    "Kentavious Caldwell-Pope",
+    "A"
+  ],
+  [
+    "Josh Richardson",
+    "A"
+  ],
+  [
+    "Richaun Holmes",
+    "C"
+  ],
+  [
+    "Clint Capela",
+    "C"
+  ],
+  [
+    "Jarrett Allen",
+    "C"
+  ],
+  [
+    "Bam Adebayo",
+    "C"
+  ],
+  [
+    "Nikola Vucevic",
+    "C"
+  ],
+  [
+    "Myles Turner",
+    "C"
+  ],
+  [
+    "Rudy Gobert",
+    "C"
+  ],
+  [
+    "Steven Adams",
+    "C"
+  ],
+  [
+    "Jonas Valanciunas",
+    "C"
+  ],
+  [
+    "Dwight Howard",
+    "C"
+  ],
+  [
+    "Jarred Vanderbilt",
+    "C"
+  ],
+  [
+    "Jakob Poeltl",
+    "C"
+  ],
+  [
+    "Christian Wood",
+    "C"
+  ],
+  [
+    "Mason Plumlee",
+    "C"
+  ],
+  [
+    "Nerlens Noel",
+    "C"
+  ],
+  [
+    "Kevon Looney",
+    "C"
+  ],
+  [
+    "Mo Bamba",
+    "C"
+  ],
+  [
+    "Enes Kanter",
+    "C"
+  ],
+  [
+    "Jaren Jackson Jr.",
+    "C"
+  ],
+  [
+    "Al Horford",
+    "C"
+  ],
+  [
+    "Alex Len",
+    "C"
+  ],
+  [
+    "Kelly Olynyk",
+    "C"
+  ],
+  [
+    "Boban Marjanovic",
+    "C"
+  ],
+  [
+    "Daniel Theis",
+    "C"
+  ],
+  [
+    "Kostas Koufos",
+    "C"
+  ],
+  [
+    "Willy Hernangomez",
+    "C"
+  ],
+  [
+    "Gorgui Dieng",
+    "C"
+  ],
+  [
+    "Mitchell Robinson",
+    "C"
+  ],
+  [
+    "Nate Wolters",
+    "C"
+  ],
+  [
+    "Dewayne Dedmon",
+    "C"
+  ],
+  [
+    "JaVale McGee",
+    "C"
+  ],
+  [
+    "Marc Gasol",
+    "C"
+  ],
+  [
+    "Andre Drummond",
+    "C"
+  ],
+  [
+    "Jusuf Nurkic",
+    "C"
+  ],
+  [
+    "DeAndre Jordan",
+    "C"
+  ],
+  [
+    "Robin Lopez",
+    "C"
+  ],
+  [
+    "Robert Williams III",
+    "C"
+  ],
+  [
+    "Derrick Favors",
+    "C"
+  ],
+  [
+    "Khem Birch",
+    "C"
+  ],
+  [
+    "Bismack Biyombo",
+    "C"
+  ],
+  [
+    "Marvin Bagley III",
+    "C"
+  ],
+  [
+    "Jahlil Okafor",
+    "C"
+  ],
+  [
+    "Channing Frye",
+    "C"
+  ],
+  [
+    "Thon Maker",
+    "C"
+  ],
+  [
+    "Kosta Koufos",
+    "C"
+  ],
+  [
+    "Tyrese Maxey",
+    "G"
+  ],
+  [
+    "Austin Reaves",
+    "G"
+  ],
+  [
+    "Anfernee Simons",
+    "G"
+  ],
+  [
+    "Bennedict Mathurin",
+    "G"
+  ],
+  [
+    "Coby White",
+    "G"
+  ],
+  [
+    "Bones Hyland",
+    "G"
+  ],
+  [
+    "Bruce Brown",
+    "G"
+  ],
+  [
+    "Dyson Daniels",
+    "G"
+  ],
+  [
+    "Keon Ellis",
+    "G"
+  ],
+  [
+    "Andrew Nembhard",
+    "G"
+  ],
+  [
+    "Franz Wagner",
+    "A"
+  ],
+  [
+    "Jonathan Kuminga",
+    "A"
+  ],
+  [
+    "Aaron Nesmith",
+    "A"
+  ],
+  [
+    "Saddiq Bey",
+    "A"
+  ],
+  [
+    "Tari Eason",
+    "A"
+  ],
+  [
+    "Herbert Jones",
+    "A"
+  ],
+  [
+    "Cam Johnson",
+    "A"
+  ],
+  [
+    "AJ Griffin",
+    "A"
+  ],
+  [
+    "Talen Horton-Tucker",
+    "A"
+  ],
+  [
+    "Jaden McDaniels",
+    "A"
+  ],
+  [
+    "Victor Wembanyama",
+    "C"
+  ],
+  [
+    "Walker Kessler",
+    "C"
+  ],
+  [
+    "Isaiah Hartenstein",
+    "C"
+  ],
+  [
+    "Nick Richards",
+    "C"
+  ],
+  [
+    "Mark Williams",
+    "C"
+  ],
+  [
+    "Jalen Duren",
+    "C"
+  ],
+  [
+    "Onyeka Okongwu",
+    "C"
+  ],
+  [
+    "Isaiah Stewart",
+    "C"
+  ],
+  [
+    "James Wiseman",
+    "C"
+  ],
+  [
+    "Trendon Watford",
+    "C"
+  ],
+  [
+    "Jeremy Sochan",
+    "A"
+  ],
+  [
+    "Jabari Smith Jr.",
+    "A"
+  ],
+  [
+    "Kyle Anderson",
+    "A"
+  ],
+  [
+    "Cam Reddish",
+    "A"
+  ],
+  [
+    "Josh Hart",
+    "A"
+  ],
+  [
+    "Obi Toppin",
+    "A"
+  ],
+  [
+    "Deni Avdija",
+    "A"
+  ],
+  [
+    "Kelly Oubre Jr.",
+    "A"
+  ],
+  [
+    "Isaac Okoro",
+    "A"
+  ],
+  [
+    "Patrick Williams",
+    "A"
+  ],
+  [
+    "Grant Williams",
+    "A"
+  ],
+  [
+    "PJ Washington",
+    "A"
+  ],
+  [
+    "Lamar Stevens",
+    "A"
+  ],
+  [
+    "Nassir Little",
+    "A"
+  ],
+  [
+    "Kenyon Martin Jr.",
+    "A"
+  ],
+  [
+    "Torrey Craig",
+    "A"
+  ],
+  [
+    "Georges Niang",
+    "A"
+  ],
+  [
+    "Ousmane Dieng",
+    "A"
+  ],
+  [
+    "Jalen Johnson",
+    "A"
+  ],
+  [
+    "Olivier Maxence-Prosper",
+    "A"
+  ]
+]

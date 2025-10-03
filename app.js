@@ -48,11 +48,19 @@ class DraftApp {
         }
         const ul = document.createElement('ul');
         ul.className = 'all-players-ul';
-        players.forEach(([nome, ruolo, squadra]) => {
+        players.forEach(([nome, ruolo, squadra, imgUrl]) => {
             const li = document.createElement('li');
             li.className = 'all-players-li player-slot';
             li.tabIndex = 0;
             li.style.cursor = 'pointer';
+            // Immagine giocatore (se presente)
+            if (imgUrl) {
+                const img = document.createElement('img');
+                img.src = imgUrl;
+                img.alt = nome;
+                img.className = 'player-img';
+                li.appendChild(img);
+            }
             // Nome e ruolo
             const main = document.createElement('div');
             main.textContent = `${nome} (${ruolo})`;
@@ -68,7 +76,6 @@ class DraftApp {
                 const squadraDest = this.draftSequence[this.pickInModifica !== null ? this.pickInModifica : this.pickIndex];
                 this.assegnaGiocatore();
                 this.updateAllPlayersList(this.playerEntry.value);
-                // Scroll orizzontale sulla squadra-frame assegnata
                 setTimeout(() => {
                     const frame = document.getElementById(`roster-${squadraDest.replace(/\s/g, '-')}`);
                     if (frame && frame.scrollIntoView) {
@@ -259,11 +266,12 @@ class DraftApp {
             try {
                 const data = JSON.parse(e.target.result);
                 if (Array.isArray(data)) {
-                    // Supporta sia [nome, ruolo] che [nome, ruolo, squadra]
+                    // Supporta sia [nome, ruolo], [nome, ruolo, squadra] che [nome, ruolo, squadra, imgUrl]
                     this.giocatoriDisponibili = data.map(arr => [
                         (arr[0] || '').trim(),
                         (arr[1] || '').trim().toUpperCase(),
-                        arr[2] ? arr[2].trim() : ''
+                        arr[2] ? arr[2].trim() : '',
+                        arr[3] ? arr[3].trim() : ''
                     ]);
                     this.listaGiocatoriOriginale = [...this.giocatoriDisponibili];
                     this.showStatus(`${this.giocatoriDisponibili.length} giocatori caricati.`, true);

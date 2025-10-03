@@ -1,3 +1,16 @@
+/* Immagine giocatore nella lista */
+.player-img {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 0.7em;
+    vertical-align: middle;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.10);
+    border: 1.5px solid var(--nba-blue);
+    background: var(--white);
+    display: inline-block;
+}
 /* Logo accanto al titolo principale */
 .logo-title {
         height: 2.2em;
@@ -47,7 +60,6 @@
     color: var(--white);
     margin-top: 2px;
     margin-left: 2px;
-    font-style: italic;
 }
 /* Pick info panel in alto centrale */
 #pick-info-panel {

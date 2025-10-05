@@ -88,27 +88,38 @@ class DraftApp {
             li.className = 'all-players-li player-slot';
             li.tabIndex = 0;
             li.style.cursor = 'pointer';
+
+            // Struttura identica a quella delle tripletta
             // Immagine giocatore (se presente)
-            // if (imgUrl) {
-            //     const img = document.createElement('img');
-            //     img.src = imgUrl;
-            //     img.alt = nome;
-            //     img.className = 'player-img';
-            //     li.appendChild(img);
-            // }
-            // Nome e ruolo
-            const main = document.createElement('div');
-            main.textContent = `${nome} (${ruolo})`;
+            if (imgUrl) {
+                const img = document.createElement('img');
+                img.src = imgUrl;
+                img.alt = nome;
+                img.className = 'player-slot-img';
+                li.appendChild(img);
+            }
+
+            // Nome giocatore
+            const nameDiv = document.createElement('div');
+            nameDiv.className = 'player-slot-name';
+            nameDiv.textContent = nome;
+            li.appendChild(nameDiv);
+
+            // Ruolo
+            const ruoloDiv = document.createElement('div');
+            ruoloDiv.className = 'player-slot-ruolo';
+            ruoloDiv.textContent = ruolo || '';
+            li.appendChild(ruoloDiv);
+
             // Squadra in piccolo
-            const team = document.createElement('div');
-            team.className = 'player-team-label';
-            team.textContent = squadra ? squadra : '';
-            li.appendChild(main);
-            li.appendChild(team);
+            const teamDiv = document.createElement('div');
+            teamDiv.className = 'player-team-label';
+            teamDiv.textContent = squadra ? squadra : '';
+            li.appendChild(teamDiv);
+
             li.addEventListener('click', () => {
                 this.playerEntry.value = nome;
                 this.updateSelectedPlayerPanel();
-                // Trova la squadra a cui verrà assegnato il giocatore
                 const squadraDest = this.draftSequence[this.pickInModifica !== null ? this.pickInModifica : this.pickIndex];
                 this.assegnaGiocatore();
                 this.updateAllPlayersList(this.playerEntry.value);
@@ -530,14 +541,46 @@ class DraftApp {
 
             // Clear all slots
             document.querySelectorAll(`#roster-${squadra.replace(/\s/g, '-')} .player-slot`).forEach(slot => {
-                slot.textContent = '';
+                slot.innerHTML = '';
             });
 
             // Fill slots
             this.rose[squadra].forEach(([nome, ruolo]) => {
                 const list = document.getElementById(`slots-${squadra.replace(/\s/g, '-')}-${ruolo}`);
                 if (list && contatoriAssegnati[ruolo] < list.children.length) {
-                    list.children[contatoriAssegnati[ruolo]].textContent = nome;
+                    const li = list.children[contatoriAssegnati[ruolo]];
+                    // Cerca info aggiuntive dal pool originale (per img/team)
+                    let playerInfo = this.listaGiocatoriOriginale.find(
+                        ([n]) => n.toLowerCase() === nome.toLowerCase()
+                    );
+                    let imgUrl = '', team = '';
+                    if (playerInfo) {
+                        imgUrl = playerInfo[3] || '';
+                        team = playerInfo[2] || '';
+                    }
+                    // Costruisci struttura identica a all-players-li
+                    if (imgUrl) {
+                        const img = document.createElement('img');
+                        img.src = imgUrl;
+                        img.alt = nome;
+                        img.className = 'player-slot-img';
+                        li.appendChild(img);
+                    }
+                    const nameDiv = document.createElement('div');
+                    nameDiv.className = 'player-slot-name';
+                    nameDiv.textContent = nome;
+                    li.appendChild(nameDiv);
+
+                    const ruoloDiv = document.createElement('div');
+                    ruoloDiv.className = 'player-slot-ruolo';
+                    ruoloDiv.textContent = ruolo || '';
+                    li.appendChild(ruoloDiv);
+
+                    const teamDiv = document.createElement('div');
+                    teamDiv.className = 'player-team-label';
+                    teamDiv.textContent = team ? team : '';
+                    li.appendChild(teamDiv);
+
                     contatoriAssegnati[ruolo]++;
                 }
             });

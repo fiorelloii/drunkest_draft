@@ -58,7 +58,7 @@
 .player-team-label {
     font-size: 0.8em;
     color: var(--white);
-    margin-top: 2px;
+    margin-top: 18px;
     margin-left: 2px;
 }
 /* Pick info panel in alto centrale */
@@ -556,7 +556,8 @@ button {
     flex-direction: row;
     align-items: flex-start;
     gap: 2em;
-    background: linear-gradient(135deg, rgba(0, 61, 167, 0.1), rgba(222, 0, 49, 0.1));
+    /* background: linear-gradient(135deg, rgba(0, 61, 167, 0.1), rgba(222, 0, 49, 0.1)); */
+    background: var(--border-light);
     border-radius: var(--radius-lg);
     margin-bottom: var(--spacing-md);
     border: 1px solid var(--border-light);
@@ -639,15 +640,68 @@ button {
 
 /* === MAIN DRAFT FRAME === */
 #main-draft-frame {
-    display: grid;
-    grid-template-columns: 320px 1fr 320px;
-    gap: var(--spacing-xl);
-    min-height: 600px;
+    display: flex;
+    flex-direction: row;
+    gap: var(--spacing-md);
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    min-width: 0;
+    align-items: stretch;
+    box-sizing: border-box;
+}
+
+/* Tutti i pannelli principali hanno la stessa altezza e si adattano */
+#picklist-frame,
+#rose-container,
+#player-search-frame {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    flex: 1 1 0;
+    box-sizing: border-box;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    overflow: hidden;
+}
+
+/* Rose container: scroll orizzontale per squadre, ma altezza sempre uguale agli altri */
+#rose-container {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: var(--spacing-sm) 0;
+}
+
+/* Picklist e player search: scroll verticale interno se serve */
+#picklist-frame,
+#player-search-frame {
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: var(--spacing-sm);
+}
+
+/* Responsive: su schermi piccoli, colonne in verticale */
+@media (max-width: 900px) {
+    #main-draft-frame {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        height: auto;
+    }
+    #picklist-frame,
+    #rose-container,
+    #player-search-frame {
+        min-height: 180px;
+        height: auto;
+        max-height: 40vh;
+    }
 }
 
 /* === PICKLIST FRAME === */
 #picklist-frame, #player-search-frame {
-        background-color: var(--bg-tertiary);
+        background-color: var(--border-light);
         border-radius: var(--radius-lg);
         padding: var(--spacing-lg);
         display: flex;
@@ -880,7 +934,7 @@ button {
 }
 
 .squadra-frame {
-    background-color: var(--bg-primary);
+    background-color: var(--border-light);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
     padding: var(--spacing-md);
@@ -1355,6 +1409,7 @@ button {
     font-weight: 400;
     margin-right: 0.5em;
     opacity: 0.85;
+    font-weight: bold;
 }
 .player-team-label {
     font-size: 0.85em;

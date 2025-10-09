@@ -274,6 +274,37 @@ class DraftApp {
         return { rose, contatori };
     }
 
+    /**
+     * Crea placeholder per la decima squadra (se presente) e aggiorna contatori.
+     * Inserisce 5 guardie (G), 5 ali (A) e 3 centri (C) direttamente in `this.rose`.
+     * I placeholder non vengono aggiunti a `giocatoriDisponibili`.
+     */
+    creaPlaceholdersPerDecimaSquadra() {
+        const NON_PICKING_INDEX = NUM_SQUADRE - 1; // 9
+        if (!this.teams || this.teams.length <= NON_PICKING_INDEX) return;
+        const team = this.teams[NON_PICKING_INDEX];
+        if (!team) return;
+
+        // Ensure structures exist
+        if (!this.rose) this.rose = {};
+        if (!this.contatoriRuoli) this.contatoriRuoli = {};
+
+        // Initialize if necessary
+        if (!this.rose[team]) this.rose[team] = [];
+        if (!this.contatoriRuoli[team]) this.contatoriRuoli[team] = { "G": 0, "A": 0, "C": 0 };
+
+        // Clear any existing entries and re-add placeholders
+        this.rose[team] = [];
+        const placeholders = [];
+        for (let i = 1; i <= 5; i++) placeholders.push([`Placeholder G${i}`, 'G']);
+        for (let i = 1; i <= 5; i++) placeholders.push([`Placeholder A${i}`, 'A']);
+        for (let i = 1; i <= 3; i++) placeholders.push([`Placeholder C${i}`, 'C']);
+
+        this.rose[team].push(...placeholders);
+        // Update counters to full
+        this.contatoriRuoli[team] = { "G": 5, "A": 5, "C": 3 };
+    }
+
     // ... (Other ported logic functions would go here, e.g., verificaLimitiRuolo)
 
     // --- Setup Tab Functions ---
@@ -345,8 +376,11 @@ class DraftApp {
             this.showStatus("Inserisci tutti i nomi delle 10 squadre.", true);
             return;
         }
-        if (this.giocatoriDisponibili.length < NUM_SQUADRE * NUM_TURNI) {
-            this.showStatus("Non ci sono abbastanza giocatori per completare il draft.", true);
+        // The 10th team (index 9) is prefilled with placeholders and does not participate in picks
+        const pickingTeams = this.teams.slice(0, NUM_SQUADRE - 1);
+        const requiredPlayers = pickingTeams.length * NUM_TURNI;
+        if (this.giocatoriDisponibili.length < requiredPlayers) {
+            this.showStatus("Non ci sono abbastanza giocatori per completare il draft (escludendo la 10ª squadra).", true);
             return;
         }
 
@@ -354,8 +388,12 @@ class DraftApp {
         this.rose = rose;
         this.contatoriRuoli = contatori;
 
-        this.draftSequence = this.generaDraftSequence(this.teams, NUM_TURNI);
-        this.pickData = this.draftSequence.map(s => ({ squadra: s, giocatore: null }));
+        // Prefill placeholders for the 10th team and mark its counters full
+        this.creaPlaceholdersPerDecimaSquadra();
+
+    // Build draft sequence only with picking teams (exclude the 10th team)
+    this.draftSequence = this.generaDraftSequence(pickingTeams, NUM_TURNI);
+    this.pickData = this.draftSequence.map(s => ({ squadra: s, giocatore: null }));
         this.pickIndex = 0;
 
         this.setupRoseDisplay(); // Create the UI frames for rosters
@@ -862,6 +900,13 @@ class DraftApp {
 
         this.undoStack = [];
         this.redoStack = [];
+        // Ensure the 10th team has placeholders if not present or incomplete
+        const tenth = this.teams && this.teams[NUM_SQUADRE - 1];
+        if (tenth) {
+            const counters = this.contatoriRuoli && this.contatoriRuoli[tenth];
+            const hasFullCounters = counters && counters.G === 5 && counters.A === 5 && counters.C === 3;
+            if (!hasFullCounters) this.creaPlaceholdersPerDecimaSquadra();
+        }
     }
 
     salvaDraft() {
@@ -1006,15 +1051,28 @@ class DraftApp {
     }
 
     resetDraftState() {
-        this.rose = this.teams.reduce((acc, team) => ({ ...acc, [team]: [] }), {});
-        this.contatoriRuoli = this.teams.reduce((acc, team) => ({ ...acc, [team]: { "G": 0, "A": 0, "C": 0 } }), {});
+        // Reset rosters for picking teams (exclude 10th team which keeps placeholders)
+        const pickingTeams = this.teams.slice(0, NUM_SQUADRE - 1);
+        this.rose = pickingTeams.reduce((acc, team) => ({ ...acc, [team]: [] }), {});
+        // Ensure the 10th team key exists so UI can render it
+        const tenth = this.teams[NUM_SQUADRE - 1];
+        if (tenth) this.rose[tenth] = this.rose[tenth] || [];
+
+        this.contatoriRuoli = pickingTeams.reduce((acc, team) => ({ ...acc, [team]: { "G": 0, "A": 0, "C": 0 } }), {});
+        if (tenth) this.contatoriRuoli[tenth] = this.contatoriRuoli[tenth] || { "G": 0, "A": 0, "C": 0 };
+
         this.giocatoriDisponibili = [...this.listaGiocatoriOriginale];
         this.giocatoriDisponibili.sort();
 
+        // Rebuild draftSequence only for picking teams and reset pick data
+        this.draftSequence = this.generaDraftSequence(pickingTeams, NUM_TURNI);
         this.pickData = this.draftSequence.map(s => ({ squadra: s, giocatore: null }));
         this.pickIndex = 0;
         this.pickInModifica = null;
         this.redoStack = [];
+
+        // Recreate placeholders for the 10th team
+        this.creaPlaceholdersPerDecimaSquadra();
 
         this.aggiornaRose();
         this.showCurrentPick();

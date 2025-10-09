@@ -161,6 +161,7 @@ class DraftApp {
         this.pickData = [];
         this.pickIndex = 0;
         this.pickInModifica = null;
+    this.lastAdded = { team: null, ruolo: null };
 
         this.setupDOMReferences();
         this.setupEventListeners();
@@ -485,6 +486,10 @@ class DraftApp {
         this.rose[squadra].push([nome, ruolo]);
         this.contatoriRuoli[squadra][ruolo]++;
 
+    // Track last added player for styling
+    this.lastAdded.team = squadra;
+    this.lastAdded.ruolo = ruolo;
+
         // 2. Remove from available players
         const playerIndex = this.giocatoriDisponibili.findIndex(([n, r]) => n === nome && r === ruolo);
         this.giocatoriDisponibili.splice(playerIndex, 1);
@@ -619,6 +624,15 @@ class DraftApp {
                     teamDiv.textContent = team ? team : '';
                     li.appendChild(teamDiv);
 
+                    // Mark the most-recently added slot with the 'recent' class
+                    li.classList.remove('recent');
+                    if (this.lastAdded.team === squadra && this.lastAdded.ruolo === ruolo) {
+                        // Only mark the most recently filled slot for this role index
+                        // We compare counts: if this is the last filled index for the role, mark it
+                        const isLastIndex = contatoriAssegnati[ruolo] === this.rose[squadra].filter(r => r[1] === ruolo).length - 1;
+                        if (isLastIndex) li.classList.add('recent');
+                    }
+
                     contatoriAssegnati[ruolo]++;
                 }
             });
@@ -723,7 +737,7 @@ class DraftApp {
         this.pickIndex = idx;
         this.pickInModifica = null;
         this.redoStack = [];
-
+    this.lastAdded = { team: null, ruolo: null };
         this.aggiornaRose();
         this.showCurrentPick();
         this.salvaTemporaneo();
@@ -761,7 +775,10 @@ class DraftApp {
 
         this.pickInModifica = idx;
 
-        this.aggiornaRose();
+    // Clear lastAdded when modifying a pick to avoid stale highlight
+    this.lastAdded = { team: null, ruolo: null };
+
+    this.aggiornaRose();
         this.updatePickListbox();
         this.playerEntry.value = nome;
         this.showStatus(`Modifica Pick #${idx + 1} di ${squadra}. Inserisci un nuovo giocatore.`, false);
@@ -868,8 +885,36 @@ class DraftApp {
         const tempDraft = localStorage.getItem(TEMP_FILE_KEY);
         if (tempDraft) {
             if (confirm("File di draft temporaneo trovato.\nVuoi continuare da quello?")) {
+                // Make sure the welcome screen is hidden and the app UI is visible
+                const welcome = document.getElementById('welcome-screen');
+                const appContainer = document.getElementById('app-container');
+                const header = document.querySelector('header');
+                const statusBar = document.getElementById('status-bar');
+                if (welcome) welcome.style.display = 'none';
+                if (appContainer) appContainer.style.display = '';
+                if (header) header.style.display = '';
+                if (statusBar) statusBar.style.display = '';
+
+                // Load draft data and navigate directly to the Draft tab
                 this.loadDraftData(JSON.parse(tempDraft));
-                this.showStatus("Draft temporaneo caricato.", true);
+
+                const setupTab = document.getElementById('setup-tab');
+                const draftTab = document.getElementById('draft-tab');
+                const tabsBar = document.getElementById('tabs-bar');
+                if (setupTab && draftTab && tabsBar) {
+                    // Ensure tabs are visible and switch to draft
+                    setupTab.style.display = 'none';
+                    draftTab.style.display = 'block';
+                    tabsBar.style.display = '';
+                    const draftButton = document.querySelector('[data-tab="draft-tab"]');
+                    if (draftButton) this.switchTab(draftButton);
+                } else {
+                    // Fallback: try switching to draft tab if present
+                    const draftButton = document.querySelector('[data-tab="draft-tab"]');
+                    if (draftButton) this.switchTab(draftButton);
+                }
+
+                this.showStatus("Draft temporaneo caricato. Passo alla pagina Draft.", true);
             } else {
                 localStorage.removeItem(TEMP_FILE_KEY);
             }
@@ -894,6 +939,8 @@ class DraftApp {
 
         this.setupRoseDisplay();
         this.aggiornaRose();
+    // Populate the searchable player list UI from the loaded state
+    this.updateAllPlayersList();
         this.showCurrentPick();
         this.playerEntry.disabled = false;
         this.switchTab(document.querySelector('[data-tab="draft-tab"]'));
@@ -1070,8 +1117,10 @@ class DraftApp {
         this.pickIndex = 0;
         this.pickInModifica = null;
         this.redoStack = [];
-
-        // Recreate placeholders for the 10th team
+    // Clear lastAdded and recreate placeholders for the 10th team
+    this.lastAdded = { team: null, ruolo: null };
+        
+    // Recreate placeholders for the 10th team
         this.creaPlaceholdersPerDecimaSquadra();
 
         this.aggiornaRose();

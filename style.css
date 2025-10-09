@@ -1057,6 +1057,15 @@ button {
     box-shadow: var(--shadow-lg);
 }
 
+/* Keep the same visual treatment for a recently-added slot */
+.player-slot.recent {
+    background: var(--nba-blue);
+    color: var(--white);
+    border-color: var(--nba-red);
+    transform: translateX(4px) scale(1.03);
+    box-shadow: var(--shadow-lg);
+}
+
 /* === STATUS BAR === */
 #status-bar {
     position: fixed;

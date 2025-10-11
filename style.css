@@ -353,6 +353,18 @@ header h1 {
     box-shadow: var(--shadow-sm);
 }
 
+/* Force-hide the tabs bar at all times per requirement: the tabs bar
+   must never be visible (even if JS or inline styles try to show it).
+   High-specificity rules with !important override inline styles. */
+#tabs-bar {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+}
+
 .tab-button {
     flex: 1;
     padding: var(--spacing-md) var(--spacing-lg);

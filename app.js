@@ -1132,3 +1132,54 @@ class DraftApp {
 document.addEventListener('DOMContentLoaded', () => {
     window.draftApp = new DraftApp();
 });
+
+// Safety: ensure the tabs bar is never visible even if other scripts try to show it.
+// This runs outside the DraftApp class so it executes as soon as DOM is ready.
+document.addEventListener('DOMContentLoaded', () => {
+    const hideTabsBar = () => {
+        const el = document.getElementById('tabs-bar');
+        if (el) {
+            try {
+                el.style.setProperty('display', 'none', 'important');
+                el.style.setProperty('visibility', 'hidden', 'important');
+                el.style.setProperty('height', '0', 'important');
+                el.style.setProperty('min-height', '0', 'important');
+                el.style.setProperty('overflow', 'hidden', 'important');
+            } catch (e) {
+                // ignore
+            }
+        }
+    };
+
+    // Initial hide
+    hideTabsBar();
+
+    // Observe attribute changes to re-hide if some script modifies inline styles
+    const observer = new MutationObserver(mutations => {
+        for (const m of mutations) {
+            if (m.type === 'attributes' && m.target && m.target.id === 'tabs-bar') {
+                hideTabsBar();
+            }
+        }
+    });
+
+    const target = document.getElementById('tabs-bar');
+    if (target) {
+        observer.observe(target, { attributes: true, attributeFilter: ['style', 'class'] });
+    } else {
+        // If not present yet, watch the body for added nodes
+        const bodyObs = new MutationObserver((mutations, obs) => {
+            for (const m of mutations) {
+                for (const node of m.addedNodes) {
+                    if (node.nodeType === 1 && node.id === 'tabs-bar') {
+                        hideTabsBar();
+                        observer.observe(node, { attributes: true, attributeFilter: ['style', 'class'] });
+                        obs.disconnect();
+                        return;
+                    }
+                }
+            }
+        });
+        bodyObs.observe(document.body, { childList: true, subtree: true });
+    }
+});

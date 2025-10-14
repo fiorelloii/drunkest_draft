@@ -3,145 +3,1168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Applicazione per draft a serpentina - Fantabasket NBA">
-    <meta name="theme-color" content="#003DA7">
-    <title>Drunkest League Draft</title>
+    <title>Drunkest League</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Main Navigation -->
+    <nav class="main-navbar">
+        <div class="main-nav-content">
+<!--             <a href="#" class="main-logo">Drunkest</a> -->
+            <img class="logo" src="./logo2.png">
+            <button class="hamburger-btn" aria-label="Apri menu" aria-expanded="false">☰</button>
+            <ul class="main-nav-links">
+                <li><a href="#" onclick="showSection('regolamento')" class="active">Regolamento</a></li>
+                <li><a href="#" onclick="showSection('rosters')">Rosters</a></li>
+                <li><a href="#" onclick="showSection('hall-of-fame')">Hall Ho Fame</a></li>
+                <li><a href="#" onclick="showSection('march-drunkeness')">March Drunkeness</a></li>
+                <li><a href="#" onclick="showSection('draft')">Draft</a></li>
 
-    <div id="welcome-screen">
-        <div class="welcome-content">
-            <div  aria-label="Logo Drunkest League"><img class="welcome-logo" src="logo2.png"></div>
-            <!-- <h1 class="welcome-title">Drunkest League Draft</h1> -->
-            <div class="welcome-buttons">
-                <button class="welcome-btn" id="btn-nuovo-draft">✨ Nuovo Draft</button>
-                <button class="welcome-btn" id="btn-carica-draft">📂 Carica Draft</button>
-                <button class="welcome-btn" id="btn-guida">📖 Guida</button>
-            </div>
+            </ul>
         </div>
-    </div>
+    </nav>
 
-    <header style="display:none">
-        <h1 style="display: flex; align-items: center; gap: 0.7em;">
-            <img src="logo2.png" alt="Logo Drunkest League" class="logo-title" />
-            <span>Drunkest League Draft</span>
-        </h1>
-        <div id="menu-bar">
-            <button onclick="draftApp.showGuide()" aria-label="Mostra guida">
-                📖 Guida
-            </button>
-            <button onclick="draftApp.newDraft()" aria-label="Inizia nuovo draft">
-                ✨ Nuovo Draft
-            </button>
-            <button onclick="draftApp.saveDraft()" aria-label="Salva draft">
-                💾 Salva Draft
-            </button>
-            <button onclick="draftApp.loadDraft()" aria-label="Carica draft">
-                📂 Carica Draft
-            </button>
-             <button onclick="draftApp.exportRostersCsv()">Esporta Rose (.csv)</button>
-            <button onclick="draftApp.resetDraftConfirm()">Reset Draft</button>
-        </div>
-    </header>
-
-
-    <div id="app-container" style="display:none">
-        <div class="tabs" id="tabs-bar" style="display:none">
-            <button class="tab-button active" data-tab="setup-tab">Setup</button>
-            <button class="tab-button" data-tab="draft-tab">Draft</button>
-        </div>
-        <div id="setup-tab" class="tab-content active" style="display:block">
-            <!-- <h2>Setup Iniziale</h2> -->
-            <div id="input-frame">
-                <p>Inserisci l'ordine delle 10 squadre</p>
-                <div id="team-entries-container"></div>
-            </div>
-            <div id="button-frame">
-                <button onclick="draftApp.shuffleTeams()">Ordine Casuale</button>
-                <input type="file" id="player-file-input" accept=".json" style="display: none;" onchange="draftApp.loadPlayers(event)">
-                <button onclick="document.getElementById('player-file-input').click()">Carica Lista Giocatori</button>
-                <button onclick="draftApp.generateDraft()">Genera Draft</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="draft-tab" class="tab-content" style="display:none">
-        <div id="pick-frame">
-            <div id="selected-player-panel"></div>
-            <p id="pick-info-panel"></p>
-        </div>
-        <div id="main-draft-frame">
-            <div id="picklist-frame">
-                <h3>Pick effettuate</h3>
-                <div id="pick-listbox-container"></div>
-                <div class="btn-frame">
-                    <button onclick="draftApp.undo()">Undo (Ctrl+Z)</button>
-                    <button onclick="draftApp.redo()">Redo (Ctrl+Y)</button>
-                </div>
-            </div>
-            <div id="rose-container">
-                <!-- Le rose delle squadre saranno generate dinamicamente in app.js con la struttura .squadra-frame > .tripletta (h4, .slot-label, .slot-list uno sopra l'altro, triplette affiancate) -->
-            </div>
-            <div id="player-search-frame">
-                <h3>Ricerca Giocatore</h3>
-                <div class="entry-button-frame">
-                    <input type="text" id="player-entry" placeholder="Nome giocatore..." list="player-suggestions">
-                    <datalist id="player-suggestions"></datalist>
-                </div>
-                <div id="all-players-list">
-                    <!-- Lista di tutti i giocatori verrà popolata da JS -->
+    <!-- Regolamento Section -->
+    <section id="regolamento" class="main-section active">
+        <!-- Sub Navigation for Regolamento -->
+        <div class="sub-navbar">
+            <div class="sub-nav-content">
+                <div class="sub-nav-links">
+                    <a href="#rule1" class="active">Iscrizione</a>
+                    <a href="#rule2">Calendario</a>
+                    <a href="#rule4">Mercato</a>
+                    <a href="#rule5">Coppa</a>
+                    <a href="#rule3">Draft</a>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div id="status-bar" style="display:none">
-        <span id="status-text">----- Avvio completato -----</span>
-    </div>
+        <div class="regolamento-section">
+            <!-- Rule 1: Iscrizione e Premi -->
+            <div id="rule1" class="rule-section">
+                <div class="section-content">
+                    <div class="rule-header">
+                        <div class="rule-number">1</div>
+                        <h1 class="rule-title">Iscrizione e Premi</h1>
+                        <p class="rule-subtitle">Quota di partecipazione e distribuzione premi</p>
+                    </div>
 
-    <script src="app.js"></script>
-    <script>
-    // Gestione welcome screen e transizione
-    document.addEventListener('DOMContentLoaded', function() {
-        const welcome = document.getElementById('welcome-screen');
-        const app = document.getElementById('app-container');
-        const header = document.querySelector('header');
-        const statusBar = document.getElementById('status-bar');
-        // Bottoni
-        document.getElementById('btn-nuovo-draft').onclick = function() {
-            welcome.style.display = 'none';
-            app.style.display = '';
-            header.style.display = '';
-            statusBar.style.display = '';
-            // Mostra solo il setup tab, nascondi tabs e draft-tab
-            document.getElementById('setup-tab').style.display = 'block';
-            document.getElementById('draft-tab').style.display = 'none';
-            document.getElementById('tabs-bar').style.display = 'none';
-            if(window.draftApp) draftApp.newDraft(true);
-        };
-        document.getElementById('btn-carica-draft').onclick = function() {
-            welcome.style.display = 'none';
-            app.style.display = '';
-            header.style.display = '';
-            statusBar.style.display = '';
-            // Mostra tabs e draft-tab solo se carichi un draft
-            document.getElementById('setup-tab').style.display = 'block';
-            document.getElementById('draft-tab').style.display = 'none';
-            document.getElementById('tabs-bar').style.display = 'none';
-            if(window.draftApp) draftApp.loadDraft();
-        };
-        document.getElementById('btn-guida').onclick = function() {
-            welcome.style.display = 'none';
-            app.style.display = '';
-            header.style.display = '';
-            statusBar.style.display = '';
-            document.getElementById('setup-tab').style.display = 'block';
-            document.getElementById('draft-tab').style.display = 'none';
-            document.getElementById('tabs-bar').style.display = 'none';
-            if(window.draftApp) draftApp.showGuide();
-        };
-    });
-    </script>
+                    <div class="rule-content">
+                        <p><strong>L'iscrizione a Drunkest League prevede una quota di 60€.</strong></p>
+
+                        <div class="prize-grid">
+                            <div class="prize-card">
+                                <div class="prize-position">1° posto</div>
+                                <div class="prize-amount">280€</div>
+                            </div>
+                            <div class="prize-card">
+                                <div class="prize-position">2° posto</div>
+                                <div class="prize-amount">160€</div>
+                            </div>
+                            <div class="prize-card">
+                                <div class="prize-position">3° posto</div>
+                                <div class="prize-amount">60€</div>
+                            </div>
+                            <div class="prize-card">
+                                <div class="prize-position">Coppa</div>
+                                <div class="prize-amount">100€</div>
+                            </div>
+                        </div>
+
+                        <div class="highlight-box">
+                            <strong>Requisiti squadra:</strong> Il nome della squadra dovrà essere così composto (come in NBA): "nome città/frazione/quartiere" + "nome squadra" e dovrà essere presentato uno stemma.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rule 2: Calendario -->
+            <div id="rule2" class="rule-section">
+                <div class="section-content">
+                    <div class="rule-header">
+                        <div class="rule-number">2</div>
+                        <h1 class="rule-title">Calendario</h1>
+                        <p class="rule-subtitle">Struttura del campionato e della coppa</p>
+                    </div>
+
+                    <div class="rule-content">
+                        <p>Il calendario Dunkest è formato da <strong>64 giornate</strong>. Siccome siamo 10, giocheremo un numero di giornate multiplo di 9 e tagliamo le ultime giornate (nelle quali i giocatori spesso riposano in vista dei Playoff).</p>
+
+                        <div class="highlight-box">
+                            <strong>Il campionato finirà alla 54esima giornata.</strong>
+                        </div>
+
+                        <p>La coppa si terrà nelle 12 giornate successive alla pausa per l'All-Star Game, parallelamente al campionato.</p>
+
+                        <table class="calendar-table">
+                            <thead>
+                                <tr>
+                                    <th>Periodo</th>
+                                    <th>Giornate</th>
+                                    <th>Descrizione</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Stagione Regolare</td>
+                                    <td>G1 - G43</td>
+                                    <td>Campionato principale</td>
+                                </tr>
+                                <tr>
+                                    <td>All-Star Break</td>
+                                    <td>G43</td>
+                                    <td>Pausa e definizione Conference</td>
+                                </tr>
+                                <tr>
+                                    <td>Coppa + Campionato</td>
+                                    <td>G44 - G54</td>
+                                    <td>Fasi finali parallele</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rule 3: Draft -->
+            <div id="rule3" class="rule-section">
+                <div class="section-content">
+                    <div class="rule-header">
+                        <div class="rule-number">3</div>
+                        <h1 class="rule-title">Draft</h1>
+                        <p class="rule-subtitle">Sistema di selezione giocatori</p>
+                    </div>
+
+                    <div class="rule-content">
+                        <p>I giocatori verranno scelti con il metodo <strong>"Draft a serpentina"</strong>. Si decide un'ordine di chiamata che poi si inverte a ogni round.</p>
+
+                        <div class="highlight-box">
+                            <strong>Esempio:</strong> il primo avrà le scelte 1, 20, 21, 40, 41, ecc.
+                        </div>
+
+                        <p>Ognuno al suo turno può chiamare qualsiasi giocatore di qualsiasi ruolo, a patto che alla fine del Draft il proprio roster sia composto da:</p>
+
+                        <div class="prize-grid">
+                            <div class="prize-card">
+                                <div class="prize-position">Guardie</div>
+                                <div class="prize-amount">5</div>
+                            </div>
+                            <div class="prize-card">
+                                <div class="prize-position">Ali</div>
+                                <div class="prize-amount">5</div>
+                            </div>
+                            <div class="prize-card">
+                                <div class="prize-position">Centri</div>
+                                <div class="prize-amount">3</div>
+                            </div>
+                        </div>
+
+                        <div class="highlight-box">
+                            <strong>Lottery:</strong> Una settimana prima del Draft verrà effettuata la Lottery, il sorteggio per decidere l'ordine di chiamata.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rule 4: Mercato -->
+            <div id="rule4" class="rule-section">
+                <div class="section-content">
+                    <div class="rule-header">
+                        <div class="rule-number">4</div>
+                        <h1 class="rule-title">Mercato</h1>
+                        <p class="rule-subtitle">Scambi e Free Agent</p>
+                    </div>
+
+                    <div class="rule-content">
+                        <p>Per effettuare scambi e per il mercato Free Agent verrà utilizzato il sistema di Dunkest.</p>
+
+                        <p><strong>Il mercato si apre ogni 5 giornate:</strong></p>
+
+                        <div class="market-schedule">
+                            <div class="market-day">G5</div>
+                            <div class="market-day">G10</div>
+                            <div class="market-day">G15</div>
+                            <div class="market-day">G20</div>
+                            <div class="market-day">G25</div>
+                            <div class="market-day">G30</div>
+                            <div class="market-day">G35</div>
+                            <div class="market-day">G40</div>
+                            <div class="market-day">G45</div>
+                            <div class="market-day">G50</div>
+                        </div>
+
+                        <p><small>(Per G5 si intende prima dell'inizio della quinta giornata)</small></p>
+
+                        <div class="highlight-box">
+                            <strong>Regola comunicazione:</strong> Ogni offerta deve essere comunicata nel gruppo WhatsApp "Trades" per dare la possibilità a tutti di poter cambiare. Ogni offerta non comunicata sarà annullata dal Commissioner.
+                            <br><br>
+                            <strong>Eccezione:</strong> Il primo in classifica è esonerato dall'obbligo perché non ha nessuno da avvertire.
+                        </div>
+
+                        <p>Ognuno potrà fare offerte autonomamente e tagliare qualsiasi giocatore. In caso di più offerte allo stesso giocatore, questo va alla squadra posizionata peggio in classifica.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rule 5: Coppa -->
+            <div id="rule5" class="rule-section">
+                <div class="section-content">
+                    <div class="rule-header">
+                        <div class="rule-number">5</div>
+                        <h1 class="rule-title">Coppa</h1>
+                        <p class="rule-subtitle">Formula playoff e Conference</p>
+                    </div>
+
+                    <div class="rule-content">
+                        <p>La coppa avrà luogo dalla 44esima giornata e avverrà parallelamente al campionato. Formula con divisione virtuale in due Conference:</p>
+
+                        <div class="conference-section">
+                            <div class="conference">
+                                <h3 class="conference-title">🍺 Beer Conference</h3>
+                                <ul>
+                                    <li>Cava Bulla</li>
+                                    <li>Los Angeles Fakers</li>
+                                    <li>Salerno Cavaliers</li>
+                                    <li>Torino Bulls</li>
+                                    <li>Torrione Horses</li>
+                                </ul>
+                            </div>
+
+                            <div class="conference">
+                                <h3 class="conference-title">🍷 Wine Conference</h3>
+                                <ul>
+                                    <li>Pontecagnano 88ers</li>
+                                    <li>San Tino Spurs</li>
+                                    <li>Sannio Pioneers</li>
+                                    <li>Torino Raptors</li>
+                                    <li>Torrione Pantofolai</li>
+                                    <li>Torrione Pantofolai</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="highlight-box">
+                            <strong>Play-in:</strong> La quarta e la quinta di ciascuna Conference parteciperanno ai Play-in nella G44.
+                            <br><br>
+                            <strong>Accoppiamenti:</strong> Prima vs vincitrice Play-in, seconda vs terza.
+                        </div>
+
+                        <table class="calendar-table">
+                            <thead>
+                                <tr>
+                                    <th>Fase</th>
+                                    <th>Giornate</th>
+                                    <th>Format</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Play-in</td>
+                                    <td>G44</td>
+                                    <td>Gara secca</td>
+                                </tr>
+                                <tr>
+                                    <td>Semifinali Conference</td>
+                                    <td>G45, G46, G47</td>
+                                    <td>Best of 3</td>
+                                </tr>
+                                <tr>
+                                    <td>Finali Conference</td>
+                                    <td>G48, G49, G50</td>
+                                    <td>Best of 3</td>
+                                </tr>
+                                <tr>
+                                    <td>Finals</td>
+                                    <td>G51, G52, G53, G54, G55</td>
+                                    <td>Best of 5</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <p><small><strong>Note:</strong> In caso di parità passa chi era posizionato meglio dopo G43. Se le serie finiscono prima, si aspetta la giornata successiva. Per le regole di gioco consultare il regolamento Dunkest.</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Draft Section -->
+    <section id="draft" class="main-section">
+        <div class="draft-table-section" style="padding: 2rem;">
+            <!-- <h2 style="text-align:center; margin-bottom:1.5rem;"></h2> -->
+            <div style="overflow-x:auto;">
+                <table class="draft-table" style="width:100%; border-collapse:collapse; min-width:900px;">
+                    <thead>
+                        <tr>
+                            <th><img class="logo" src="./pontecagnano 88ers.png" alt="88"></th>
+                            <th><img class="logo" src="./salerno cavaliers.png" alt="sc"></th>
+                            <th><img class="logo" src="./sannio pioneers.png" alt="sp"></th>
+                            <th><img class="logo" src="./torino bulls.png" alt="tb"></th>
+                            <th><img class="logo" src="./torino raptors.png" alt="tr"></th>
+                            <th><img class="logo" src="./torrione eaters.png" alt="te"></th>
+                            <th><img class="logo" src="./torrione state warriors.png" alt="tsw"></th>
+                            <th><img class="logo" src="./san tino spurs.png" alt="88ers"></th>
+                            <th><img class="logo" src="./cava bulla.png" alt="88ers"></th>
+                            <th><img class="logo" src="./san tino spurs.png" alt="88ers"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- 13 righe per inserimento valori -->
+                        <tr>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                    </tbody>
+                            <td contenteditable="true" style="border:1px solid #ccc; padding:0.5rem;"></td>
+                            <td contenteditable="true" style="border:1px solid #ccc; padding:0.5rem;"></td>
+                            <td contenteditable="true" style="border:1px solid #ccc; padding:0.5rem;"></td>
+                            <td contenteditable="true" style="border:1px solid #ccc; padding:0.5rem;"></td>
+                            <td contenteditable="true" style="border:1px solid #ccc; padding:0.5rem;"></td>
+                            <td contenteditable="true" style="border:1px solid #ccc; padding:0.5rem;"></td>
+                            <td contenteditable="true" style="border:1px solid #ccc; padding:0.5rem;"></td>
+                            <td contenteditable="true" style="border:1px solid #ccc; padding:0.5rem;"></td>
+                            <td contenteditable="true" style="border:1px solid #ccc; padding:0.5rem;"></td>
+                            <td contenteditable="true" style="border:1px solid #ccc; padding:0.5rem;"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- March Drunkeness Section -->
+    <section id="march-drunkeness" class="main-section">
+        <div class="empty-section">
+            <div class="empty-content">
+                <h2>March Drunkeness</h2>
+                <p>Sezione in costruzione...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hall of Fame Section -->
+    <section id="hall-of-fame" class="main-section">
+        
+        <!-- Sub Navigation for Regolamento -->
+        <div class="sub-navbar">
+            <div class="sub-nav-content">
+                <div class="sub-nav-links">
+                    <a href="#rule6" class="active">Drunkest League</a>
+                    <a href="#rule7">March Drunkeness</a>
+                    <a href="#rule8">Palmares</a>
+                    <a href="#rule9">Galleria</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="regolamento-section">
+            <!-- Rule 1: Drunkest League-->
+            <div id="rule6" class="rule-section">
+                <div class="section-content">
+                    <div class="rule-header">
+                        <h1 class="rule-title">Drunkest League</h1>
+                    </div>
+                    <div class="rule-content">
+                        <div class="prize-grid">
+                              <div class="prize-card">
+                                <div class="prize-position">2025/26</div>
+                                <div class="prize-amount">...</div>
+                                
+                            </div>
+                            <div class="prize-card">
+                                <div class="prize-position">2024/25</div>
+                                <div class="prize-amount">Roberto Viscido</div>
+                                <img class="logo" src="./torrione state warriors.png" alt="tsw">
+                            </div>
+                            <div class="prize-card">
+                                <div class="prize-position">2023/24</div>
+                                <div class="prize-amount">Luca Fiorilli</div>
+                                <img class="logo" src="./torino bulls.png" alt="tb">
+                            </div>
+                            <div class="prize-card">
+                                <div class="prize-position">2022/23</div>
+                                <div class="prize-amount">Roberto Viscido</div>
+                                <img class="logo" src="./torrione state warriors.png" alt="tsw">
+                            </div>
+                           
+                        </div>
+                        <div class="prize-grid">
+                             <div class="prize-card">
+                                <div class="prize-position">2021/22</div>
+                                <div class="prize-amount">Roberto Viscido</div>
+                                <img class="logo" src="./torrione state warriors.png" alt="tsw">
+                            </div>
+                            <div class="prize-card">
+                                <div class="prize-position">2020/21</div>
+                                <div class="prize-amount">Tommaso Ciccarelli</div>
+                                <img class="logo" src="./torrione eaters.png" alt="te">
+                            </div>
+                            <div class="prize-card">
+                                <div class="prize-position">2019/20</div>
+                                <div class="prize-amount">N.A.*</div>
+                            </div>
+                            <div class="prize-card">
+                                <div class="prize-position">2018/19</div>
+                                <div class="prize-amount">Luca Fiorilli</div>
+                                <img class="logo" src="./torino bulls.png" alt="tb">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rule 2: March Drunkeness -->
+            <div id="rule7" class="rule-section">
+                <div class="section-content">
+                    <div class="rule-header">
+                        <h1 class="rule-title">March Drunkeness</h1>
+                    </div>
+
+                    <div class="rule-content">
+                        <div class="prize-grid">
+                            <div class="prize-card">
+                                <div class="prize-position">2024/25</div>
+                                <div class="prize-amount">Roberto Viscido</div>
+                                <img class="logo" src="./torrione state warriors.png" alt="tsw">
+                            </div>
+                            <div class="prize-card">
+                                <div class="prize-position">2023/24</div>
+                                <div class="prize-amount">Luca Fiorilli</div>
+                                <img class="logo" src="./torino bulls.png" alt="tb">
+                            </div>
+                            <div class="prize-card">
+                                <div class="prize-position">2022/23</div>
+                                <div class="prize-amount">Andrea Guerriero, Giulio Del Giorno</div>
+                                <img class="logo" src="./salerno cavaliers.png" alt="sc">
+                            </div>
+                            <div class="prize-card">
+                                <div class="prize-position">2021/22</div>
+                                <div class="prize-amount">Luca Fiorilli</div>
+                                <img class="logo" src="./torino bulls.png" alt="tb">
+                            </div>
+                        </div>
+                        <div class="prize-grid">
+                            <div class="prize-card">
+                                <div class="prize-position">2020/21</div>
+                                <div class="prize-amount">Tommaso Ciccarelli</div>
+                                <img class="logo" src="./torrione eaters.png" alt="te">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rule 3: Palmares -->
+            <div id="rule8" class="rule-section">
+                <div class="section-content">
+                    <div class="rule-header">
+                        <h1 class="rule-title">Palmares</h1>
+                    </div>
+
+                    <div class="rule-content">
+                       <table class="calendar-table">
+                            <thead>
+                                <tr>
+                                    <th>Team</th>
+                                    <th>Presidente</th>
+                                    <th>Drunkest League</th>
+                                    <th>March Drunkeness</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Torrione Pantofolai</td>
+                                    <td>Roberto Viscido</td>
+                                    <td>3</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td>Torino Bulls</td>
+                                    <td>Luca Fiorilli</td>
+                                    <td>2</td>
+                                    <td>2</td>
+                                </tr>
+                                <tr>
+                                    <td>Torrione Horses</td>
+                                    <td>Tommaso Ciccarelli</td>
+                                    <td>1</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td>Salerno Cavaliers</td>
+                                    <td>Andrea Guerriero Giulio Del Giorno</td>
+                                    <td>-</td>
+                                    <td>1</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- Rule 9: Galleria -->
+            <div id="rule9" class="rule-section">
+                <div class="section-content">
+                    <div class="rule-header">
+                        <h1 class="rule-title">Galleria</h1>
+                        <div class="media-carousel">
+                            <div class="carousel-container" id="carouselContainer">
+                                <div class="carousel-slide">
+                                    <div class="carousel-placeholder">2024/25. Il presidente dei Pantofolai festeggia la vittoria della coppa e del terzo titolo della storia della franchigia</div>
+                                    <img src="./Gallery1.jpg" alt="Media 1" />
+                                </div>
+                                <div class="carousel-slide">
+                                    <div class="carousel-placeholder">2023/24. Il presidente dei Pontland Trail Blazers si laurea campione della Drunkest League e della March Drunkeness</div>
+                                    <img src="Gallery2.jpg" alt="Media 2" />
+                                </div>
+                                <div class="carousel-slide">
+                                    <div class="carousel-placeholder">2021/22 e 2022/23. I volti vincenti dei Torrione Pantofolai, detentori di due titoli consecutivi 3</div>
+                                    <img src="Gallery3.jpg" alt="Media 3" />
+                                </div>
+                                <div class="carousel-slide">
+                                    <div class="carousel-placeholder">2020/21. Coach Ciccarelli si congratula con la sua punta di diamante, Nikola Jokić, fondamentale nella conquista del titolo</div>
+                                    <img src="Gallery4.jpg" alt="Media 4" />
+                                </div>
+                                <div class="carousel-slide">
+                                    <div class="carousel-placeholder">2019/20. I presidenti dei Cava Bulla sorridenti nonostante il campionato annullato a un passo dalla loro vittoria nella stagione</div>
+                                    <img src="Gallery5.jpg" alt="Media 4" />
+                                </div>
+                                <div class="carousel-slide">
+                                    <div class="carousel-placeholder">2018/19. Consegna premi</div>
+                                    <img src="Gallery7.jpg" alt="Media 4" />
+                                </div>
+                            </div>
+                            
+                            <div class="carousel-nav">
+                                <button class="carousel-btn" onclick="previousSlide()">‹</button>
+                                <button class="carousel-btn" onclick="nextSlide()">›</button>
+                            </div>
+                            
+                            <div class="carousel-dots">
+                                <span class="dot active" onclick="currentSlide(1)"></span>
+                                <span class="dot" onclick="currentSlide(2)"></span>
+                                <span class="dot" onclick="currentSlide(3)"></span>
+                                <span class="dot" onclick="currentSlide(4)"></span>
+                            </div>
+                        </div>
+                    </div>                   
+                </div>
+            </div>
+        </div>
+    </section> 
+
+    <!-- Rosters Section -->
+    <section id="rosters" class="main-section">
+        <!-- Sub Navigation for Rosters -->
+        <div class="sub-navbar">
+            <div class="sub-nav-content">
+                <div class="sub-nav-links">
+                    <a href="#team1" class="active">88ers</a>
+                    <a href="#team2">Cava Bulla</a>
+                    <a href="#team3">Salerno Cavaliers</a>
+                    <a href="#team4">Santino Spurs</a>
+                    <a href="#team5">Los Angeles Fakers</a>
+                    <a href="#team6">Sannio Pioneers</a>
+                    <a href="#team7">Torino Bulls</a>
+                    <a href="#team8">Torino Raptors</a>
+                    <a href="#team9">Torrione State Warriors</a>
+                    <a href="#team10">Torrione Eaters</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="roster-section">
+            <!-- Team 1: 88ers -->
+            <div id="team1" class="team-section">
+                <div class="team-content">
+                    <img class="logo" src="./pontecagnano 88ers.png" alt="88">
+                    <!-- <h2 class="team-name">88ers</h2> -->
+                    
+                    <div class="conference-section">
+                        <div class="conference">
+                            <h3 class="conference-title">🏀 Guardie</h3>
+                            <ul>
+                                <li>Giocatore 1</li>
+                                <li>Giocatore 2</li>
+                                <li>Giocatore 3</li>
+                                <li>Giocatore 4</li>
+                                <li>Giocatore 5</li>
+                            </ul>
+                        </div>
+                        <div class="conference">
+                            <h3 class="conference-title">🏃 Ali</h3>
+                            <ul>
+                                <li>Giocatore 1</li>
+                                <li>Giocatore 2</li>
+                                <li>Giocatore 3</li>
+                                <li>Giocatore 4</li>
+                                <li>Giocatore 5</li>
+                            </ul>
+                        </div>
+                        <div class="conference">
+                            <h3 class="conference-title">🏢 Centri</h3>
+                            <ul>
+                                <li>Giocatore 1</li>
+                                <li>Giocatore 2</li>
+                                <li>Giocatore 3</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team 2: Cava Bulla -->
+            <div id="team2" class="team-section">
+                <div class="team-content">
+                     <img class="logo" src="./cava bulla.png" alt="88">
+                    <!-- <h2 class="team-name">Cava Bulla</h2> -->
+                    
+                    <div class="conference-section">
+                        <div class="conference">
+                            <h3 class="conference-title">🏀 Guardie</h3>
+                            <ul>
+                                <li>Giocatore 1</li>
+                                <li>Giocatore 2</li>
+                                <li>Giocatore 3</li>
+                                <li>Giocatore 4</li>
+                                <li>Giocatore 5</li>
+                            </ul>
+                        </div>
+                        <div class="conference">
+                            <h3 class="conference-title">🏃 Ali</h3>
+                            <ul>
+                                <li>Giocatore 1</li>
+                                <li>Giocatore 2</li>
+                                <li>Giocatore 3</li>
+                                <li>Giocatore 4</li>
+                                <li>Giocatore 5</li>
+                            </ul>
+                        </div>
+                        <div class="conference">
+                            <h3 class="conference-title">🏢 Centri</h3>
+                            <ul>
+                                <li>Giocatore 1</li>
+                                <li>Giocatore 2</li>
+                                <li>Giocatore 3</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team 3: Salerno Cavaliers -->
+            <div id="team3" class="team-section">
+                <div class="team-content">
+                 <img class="logo" src="./salerno cavaliers.png" alt="88">
+                    <!-- <h2 class="team-name">Salerno Cavaliers</h2> -->
+                    
+                    <div class="conference-section">
+                        <div class="conference">
+                            <h3 class="conference-title">🏀 Guardie</h3>
+                            <ul>
+                                <li>Giocatore 1</li>
+                                <li>Giocatore 2</li>
+                                <li>Giocatore 3</li>
+                                <li>Giocatore 4</li>
+                                <li>Giocatore 5</li>
+                            </ul>
+                        </div>
+                        <div class="conference">
+                            <h3 class="conference-title">🏃 Ali</h3>
+                            <ul>
+                                <li>Giocatore 1</li>
+                                <li>Giocatore 2</li>
+                                <li>Giocatore 3</li>
+                                <li>Giocatore 4</li>
+                                <li>Giocatore 5</li>
+                            </ul>
+                        </div>
+                        <div class="conference">
+                            <h3 class="conference-title">🏢 Centri</h3>
+                            <ul>
+                                <li>Giocatore 1</li>
+                                <li>Giocatore 2</li>
+                                <li>Giocatore 3</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team 4: Santino Spurs -->
+            <div id="team4" class="team-section">
+                <div class="team-content">
+                   <img class="logo" src="./san tino spurs.png" alt="88">
+                    <!-- <h2 class="team-name">Santino Spurs</h2> -->
+                    
+                    <div class="conference-section">
+                        <div class="conference">
+                            <h3 class="conference-title">🏀 Guardie</h3>
+                            <ul>
+                                <li>Giocatore 1</li>
+                                <li>Giocatore 2</li>
+                                <li>Giocatore 3</li>
+                                <li>Giocatore 4</li>
+                                <li>Giocatore 5</li>
+                            </ul>
+                        </div>
+                        <div class="conference">
+                            <h3 class="conference-title">🏃 Ali</h3>
+                            <ul>
+                                <li>Giocatore 1</li>
+                                <li>Giocatore 2</li>
+                                <li>Giocatore 3</li>
+                                <li>Giocatore 4</li>
+                                <li>Giocatore 5</li>
+                            </ul>
+                        </div>
+                        <div class="conference">
+                            <h3 class="conference-title">🏢 Centri</h3>
+                            <ul>
+                                <li>Giocatore 1</li>
+                                <li>Giocatore 2</li>
+                                <li>Giocatore 3</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team 6: Sannio Pioneers -->
+            <div id="team6" class="team-section">
+                <div class="team-content">
+                   <img class="logo" src="./sannio pioneers.png" alt="88">
+                    <!-- <h2 class="team-name">Sannio Pioneers</h2> -->
+                    
+                    <div class="conference-section">
+                        <div class="conference">
+                            <h3 class="conference-title">🏀 Guardie</h3>
+                            <ul>
+                                <li>Giocatore 1</li>
+                                <li>Giocatore 2</li>
+                                <li>Giocatore 3</li>
+                                <li>Giocatore 4</li>
+                                <li>Giocatore 5</li>
+                            </ul>
+                        </div>
+                        <div class="conference">
+                            <h3 class="conference-title">🏃 Ali</h3>
+                            <ul>
+                                <li>Giocatore 1</li>
+                                <li>Giocatore 2</li>
+                                <li>Giocatore 3</li>
+                                <li>Giocatore 4</li>
+                                <li>Giocatore 5</li>
+                            </ul>
+                        </div>
+                        <div class="conference">
+                            <h3 class="conference-title">🏢 Centri</h3>
+                            <ul>
+                                <li>Giocatore 1</li>
+                                <li>Giocatore 2</li>
+                                <li>Giocatore 3</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team 7: Torino Bulls -->
+            <div id="team7" class="team-section">
+                <div class="team-content">
+                    <img class="logo" src="./torino bulls.png" alt="88">
+                    <!-- <h2 class="team-name">Torino Bulls</h2> -->
+                    
+                    <div class="conference-section">
+                        <div class="conference">
+                            <h3 class="conference-title">🏀 Guardie</h3>
+                            <ul>
+                                <li>Giocatore 1</li>
+                                <li>Giocatore 2</li>
+                                <li>Giocatore 3</li>
+                                <li>Giocatore 4</li>
+                                <li>Giocatore 5</li>
+                            </ul>
+                        </div>
+                        <div class="conference">
+                            <h3 class="conference-title">🏃 Ali</h3>
+                            <ul>
+                                <li>Giocatore 1</li>
+                                <li>Giocatore 2</li>
+                                <li>Giocatore 3</li>
+                                <li>Giocatore 4</li>
+                                <li>Giocatore 5</li>
+                            </ul>
+                        </div>
+                        <div class="conference">
+                            <h3 class="conference-title">🏢 Centri</h3>
+                            <ul>
+                                <li>Giocatore 1</li>
+                                <li>Giocatore 2</li>
+                                <li>Giocatore 3</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team 8: Torino Raptors -->
+            <div id="team8" class="team-section">
+                <div class="team-content">
+                    <img class="logo" src="./torino raptors.png" alt="88">
+                    <!-- <h2 class="team-name">Torino Raptors</h2> -->
+                    
+                    <div class="conference-section">
+                        <div class="conference">
+                            <h3 class="conference-title">🏀 Guardie</h3>
+                            <ul>
+                                <li>Giocatore 1</li>
+                                <li>Giocatore 2</li>
+                                <li>Giocatore 3</li>
+                                <li>Giocatore 4</li>
+                                <li>Giocatore 5</li>
+                            </ul>
+                        </div>
+                        <div class="conference">
+                            <h3 class="conference-title">🏃 Ali</h3>
+                            <ul>
+                                <li>Giocatore 1</li>
+                                <li>Giocatore 2</li>
+                                <li>Giocatore 3</li>
+                                <li>Giocatore 4</li>
+                                <li>Giocatore 5</li>
+                            </ul>
+                        </div>
+                        <div class="conference">
+                            <h3 class="conference-title">🏢 Centri</h3>
+                            <ul>
+                                <li>Giocatore 1</li>
+                                <li>Giocatore 2</li>
+                                <li>Giocatore 3</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team 9: Torrione State Warriors -->
+            <div id="team9" class="team-section">
+                <div class="team-content">
+                    <img class="logo" src="./torrione state warriors.png" alt="88">
+                    <!-- <h2 class="team-name">Torrione State Warriors</h2> -->
+                    
+                    <div class="conference-section">
+                        <div class="conference">
+                            <h3 class="conference-title">🏀 Guardie</h3>
+                            <ul>
+                                <li>Giocatore 1</li>
+                                <li>Giocatore 2</li>
+                                <li>Giocatore 3</li>
+                                <li>Giocatore 4</li>
+                                <li>Giocatore 5</li>
+                            </ul>
+                        </div>
+                        <div class="conference">
+                            <h3 class="conference-title">🏃 Ali</h3>
+                            <ul>
+                                <li>Giocatore 1</li>
+                                <li>Giocatore 2</li>
+                                <li>Giocatore 3</li>
+                                <li>Giocatore 4</li>
+                                <li>Giocatore 5</li>
+                            </ul>
+                        </div>
+                        <div class="conference">
+                            <h3 class="conference-title">🏢 Centri</h3>
+                            <ul>
+                                <li>Giocatore 1</li>
+                                <li>Giocatore 2</li>
+                                <li>Giocatore 3</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team 10: Torrione Eaters -->
+            <div id="team10" class="team-section">
+                <div class="team-content">
+                    <img class="logo" src="./torrione eaters.png" alt="88">
+                    <!-- <h2 class="team-name">Torrione Eaters</h2> -->
+                    
+                    <div class="conference-section">
+                        <div class="conference">
+                            <h3 class="conference-title">🏀 Guardie</h3>
+                            <ul>
+                                <li>Giocatore 1</li>
+                                <li>Giocatore 2</li>
+                                <li>Giocatore 3</li>
+                                <li>Giocatore 4</li>
+                                <li>Giocatore 5</li>
+                            </ul>
+                        </div>
+                        <div class="conference">
+                            <h3 class="conference-title">🏃 Ali</h3>
+                            <ul>
+                                <li>Giocatore 1</li>
+                                <li>Giocatore 2</li>
+                                <li>Giocatore 3</li>
+                                <li>Giocatore 4</li>
+                                <li>Giocatore 5</li>
+                            </ul>
+                        </div>
+                        <div class="conference">
+                            <h3 class="conference-title">🏢 Centri</h3>
+                            <ul>
+                                <li>Giocatore 1</li>
+                                <li>Giocatore 2</li>
+                                <li>Giocatore 3</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team 5: Los Angeles Fakers -->
+            <div id="team5" class="team-section">
+                <div class="team-content">
+                    <!-- <img class="logo" src="" alt="88"> -->
+                    <!-- <h2 class="team-name">T.B.D.</h2> -->
+                    
+                    <div class="conference-section">
+                        <div class="conference">
+                            <h3 class="conference-title">🏀 Guardie</h3>
+                            <ul>
+                                <li>Giocatore 1</li>
+                                <li>Giocatore 2</li>
+                                <li>Giocatore 3</li>
+                                <li>Giocatore 4</li>
+                                <li>Giocatore 5</li>
+                            </ul>
+                        </div>
+                        <div class="conference">
+                            <h3 class="conference-title">🏃 Ali</h3>
+                            <ul>
+                                <li>Giocatore 1</li>
+                                <li>Giocatore 2</li>
+                                <li>Giocatore 3</li>
+                                <li>Giocatore 4</li>
+                                <li>Giocatore 5</li>
+                            </ul>
+                        </div>
+                        <div class="conference">
+                            <h3 class="conference-title">🏢 Centri</h3>
+                            <ul>
+                                <li>Giocatore 1</li>
+                                <li>Giocatore 2</li>
+                                <li>Giocatore 3</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-content">
+<!--             <div class="footer-section">
+                <h3>Drunkest League</h3>
+                <p>La fantasy league più competitiva dedicata al basket NBA.</p>
+            </div> -->
+            <div class="footer-section">
+                <h3>Contatti</h3>
+                <p>Email: lucafiorilli91@gmail.com</p>
+                <p>Sede: Torino, TO 10010</p>
+            </div>
+            <div class="footer-section">
+                <h3>Fondatore</h3>
+                <p>Luca Fiorilli</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Drunkest League. Tutti i diritti riservati.</p>
+            <p>Norme sulla privacy | Utilizzo dei cookie | Condizioni d’uso | Note legali | Mappa del sito</p>
+        </div>
+    </footer>
+<script> // Carousel functionality
+    let currentSlideIndex = 0;
+    const slides = document.querySelectorAll('.carousel-slide');
+    const dots = document.querySelectorAll('.dot');
+    const totalSlides = slides.length;
+
+    // Auto-play carousel
+    setInterval(nextSlide, 5000);
+
+    // Smooth scrolling and animation on scroll
+    const sections = document.querySelectorAll('.section-content');
+    const navbar = document.querySelector('.navbar');
+</script>
+    <script src="script.js"></script>
 </body>
 </html>

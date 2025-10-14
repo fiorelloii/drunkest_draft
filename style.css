@@ -58,7 +58,7 @@
 .player-team-label {
     font-size: 0.8em;
     color: var(--white);
-    margin-top: 2px;
+    margin-top: 18px;
     margin-left: 2px;
 }
 /* Pick info panel in alto centrale */
@@ -260,23 +260,10 @@ html {
     --z-tooltip: 1070;
 }
 
-/* Dark Mode Variables */
-@media (prefers-color-scheme: dark) {
-    :root {
-        --bg-primary: #000000;
-        --bg-secondary: #1c1c1e;
-        --bg-tertiary: #2c2c2e;
-        --text-primary: #f5f5f7;
-        --text-secondary: #98989d;
-        --text-tertiary: #636366;
-        --border-color: #38383a;
-        --border-light: #2c2c2e;
-        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-        --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
-        --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
-        --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
-    }
-}
+/* Dark mode support intentionally disabled.
+   The site should always render with the light theme regardless of
+   OS/browser `prefers-color-scheme` settings. Do NOT add a
+   `@media (prefers-color-scheme: dark)` block here. */
 
 /* === BASE STYLES === */
 body {
@@ -303,12 +290,10 @@ header {
     border-bottom: 1px solid var(--border-light);
     padding: var(--spacing-md) var(--spacing-xl);
     transition: background var(--transition-base);
-}
-
-@media (prefers-color-scheme: dark) {
-    header {
-        background: rgba(28, 28, 30, 0.8);
-    }
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 header h1 {
@@ -318,43 +303,35 @@ header h1 {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-bottom: var(--spacing-md);
+    margin-bottom: 0;
     letter-spacing: -0.02em;
+    flex: 0 0 auto;
+    margin-right: var(--spacing-xl);
 }
 
 #menu-bar {
     display: flex;
     flex-wrap: wrap;
     gap: var(--spacing-sm);
+    margin-left: auto;
+    align-items: center;
 }
 
-#menu-bar button {
-    background-color: transparent;
-    color: var(--text-primary);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-full);
-    padding: var(--spacing-sm) var(--spacing-lg);
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-medium);
-    cursor: pointer;
-    transition: all var(--transition-base);
-    outline: none;
-    will-change: transform, box-shadow;
-}
-
-#menu-bar button:hover {
-    background-color: var(--bg-tertiary);
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-sm);
-}
-
-#menu-bar button:active {
-    transform: translateY(0);
-}
-
-#menu-bar button:focus-visible {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 2px;
+@media (max-width: 700px) {
+    header {
+        flex-direction: column;
+        align-items: stretch;
+        padding: var(--spacing-md);
+    }
+    header h1 {
+        margin-right: 0;
+        margin-bottom: var(--spacing-md);
+        text-align: center;
+    }
+    #menu-bar {
+        justify-content: center;
+        margin-left: 0;
+    }
 }
 
 /* === APP CONTAINER === */
@@ -374,6 +351,18 @@ header h1 {
     padding: var(--spacing-xs);
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-sm);
+}
+
+/* Force-hide the tabs bar at all times per requirement: the tabs bar
+   must never be visible (even if JS or inline styles try to show it).
+   High-specificity rules with !important override inline styles. */
+#tabs-bar {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
 }
 
 .tab-button {
@@ -423,7 +412,7 @@ header h1 {
     display: none;
     background-color: var(--bg-primary);
     border-radius: var(--radius-lg);
-    padding: var(--spacing-lg);
+    padding: var(--spacing-md);
     box-shadow: var(--shadow-md);
     animation: fadeIn var(--transition-base);
 }
@@ -566,9 +555,10 @@ button {
     flex-direction: row;
     align-items: flex-start;
     gap: 2em;
-    background: linear-gradient(135deg, rgba(0, 61, 167, 0.1), rgba(222, 0, 49, 0.1));
+    /* background: linear-gradient(135deg, rgba(0, 61, 167, 0.1), rgba(222, 0, 49, 0.1)); */
+    background: var(--border-light);
     border-radius: var(--radius-lg);
-    margin-bottom: var(--spacing-xl);
+    margin-bottom: var(--spacing-md);
     border: 1px solid var(--border-light);
 }
 
@@ -649,15 +639,68 @@ button {
 
 /* === MAIN DRAFT FRAME === */
 #main-draft-frame {
-    display: grid;
-    grid-template-columns: 320px 1fr 320px;
-    gap: var(--spacing-xl);
-    min-height: 600px;
+    display: flex;
+    flex-direction: row;
+    gap: var(--spacing-md);
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    min-width: 0;
+    align-items: stretch;
+    box-sizing: border-box;
+}
+
+/* Tutti i pannelli principali hanno la stessa altezza e si adattano */
+#picklist-frame,
+#rose-container,
+#player-search-frame {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    flex: 1 1 0;
+    box-sizing: border-box;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    overflow: hidden;
+}
+
+/* Rose container: scroll orizzontale per squadre, ma altezza sempre uguale agli altri */
+#rose-container {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: var(--spacing-sm) 0;
+}
+
+/* Picklist e player search: scroll verticale interno se serve */
+#picklist-frame,
+#player-search-frame {
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: var(--spacing-sm);
+}
+
+/* Responsive: su schermi piccoli, colonne in verticale */
+@media (max-width: 900px) {
+    #main-draft-frame {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        height: auto;
+    }
+    #picklist-frame,
+    #rose-container,
+    #player-search-frame {
+        min-height: 180px;
+        height: auto;
+        max-height: 40vh;
+    }
 }
 
 /* === PICKLIST FRAME === */
 #picklist-frame, #player-search-frame {
-        background-color: var(--bg-tertiary);
+        background-color: var(--border-light);
         border-radius: var(--radius-lg);
         padding: var(--spacing-lg);
         display: flex;
@@ -890,17 +933,17 @@ button {
 }
 
 .squadra-frame {
-    background-color: var(--bg-primary);
+    background-color: var(--border-light);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
-    padding: var(--spacing-lg);
+    padding: var(--spacing-md);
     transition: all var(--transition-base);
-    min-width: 220px;
+    min-width: 340px;
     display: flex;
     flex-direction: row;
     align-items: stretch;
     justify-content: center;
-    gap: var(--spacing-lg);
+    gap: var(--spacing-sm);
     flex-wrap: wrap;
 }
 .tripletta {
@@ -958,7 +1001,6 @@ button {
     font-size: var(--font-size-lg);
     font-weight: var(--font-weight-bold);
     color: var(--text-primary);
-    margin-bottom: var(--spacing-md);
     padding-bottom: var(--spacing-xs);
     border-bottom: 2px solid var(--nba-blue);
     text-align: center;
@@ -987,12 +1029,11 @@ button {
 
 .slot-list {
     list-style: none;
-    margin-bottom: var(--spacing-md);
 }
 
 
 .player-slot {
-    background: linear-gradient(135deg, var(--nba-red) 0%, var(--nba-blue) 100%);
+    background: var(--nba-red);
     color: var(--white);
     padding: var(--spacing-sm) var(--spacing-md);
     margin-bottom: var(--spacing-xs);
@@ -1009,11 +1050,11 @@ button {
 
 /* Solo la lista giocatori: gradiente solo rosso */
 .all-players-li.player-slot {
-    background: linear-gradient(135deg, var(--nba-red) 0%, #ff4d4d 100%);
+    background: var(--nba-red);
     border: 1px solid var(--nba-red);
 }
 .all-players-li.player-slot:hover {
-    background: linear-gradient(135deg, #ff4d4d 0%, var(--nba-red) 100%);
+    background: var(--nba-blue);
     border-color: var(--nba-blue);
     color: var(--white);
     transform: translateX(4px) scale(1.03);
@@ -1021,7 +1062,16 @@ button {
 }
 
 .player-slot:hover {
-    background: linear-gradient(135deg, var(--nba-blue) 0%, var(--nba-red) 100%);
+    background: var(--nba-blue);
+    color: var(--white);
+    border-color: var(--nba-red);
+    transform: translateX(4px) scale(1.03);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Keep the same visual treatment for a recently-added slot */
+.player-slot.recent {
+    background: var(--nba-blue);
     color: var(--white);
     border-color: var(--nba-red);
     transform: translateX(4px) scale(1.03);
@@ -1043,11 +1093,7 @@ button {
     transition: all var(--transition-base);
 }
 
-@media (prefers-color-scheme: dark) {
-    #status-bar {
-        background: rgba(28, 28, 30, 0.8);
-    }
-}
+/* Dark-mode status bar override removed to keep light theme always */
 
 #status-text {
     font-size: var(--font-size-sm);
@@ -1176,12 +1222,7 @@ button {
         --text-secondary: #000000;
     }
     
-    @media (prefers-color-scheme: dark) {
-        :root {
-            --border-color: #ffffff;
-            --text-secondary: #ffffff;
-        }
-    }
+    /* Nested prefers-color-scheme: dark removed to avoid switching to dark color tokens */
 }
 
 /* === UTILITY CLASSES === */
@@ -1259,6 +1300,7 @@ button {
     margin: 1em auto 1em auto;
     max-width: 420px;
     min-height: 110px;
+    width: 420px;
 }
 .selected-player-img-wrap {
     flex: 0 0 auto;
@@ -1327,4 +1369,60 @@ button {
     .selected-player-squadra {
         font-size: 0.8em;
     }
+}
+
+/* Nuovo stile per i player-slot */
+.player-slot,
+.all-players-li.player-slot {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    background: var(--nba-red);
+        color: var(--white);
+    border-radius: 8px;
+    padding: 0.3em 0.7em;
+    margin: 0.2em 0;
+    font-weight: 600;
+    font-size: 1em;
+    min-height: 50px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    border: none;
+    transition: background 0.2s;
+}
+.player-slot-img {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--white);
+    background: var(--gray);
+    flex-shrink: 0;
+}
+.player-slot-name {
+    font-size: 1em;
+    font-weight: 600;
+    margin-right: 0.5em;
+}
+.player-slot-ruolo {
+    font-size: 0.95em;
+    font-weight: 400;
+    margin-right: 0.5em;
+    opacity: 0.85;
+    font-weight: bold;
+}
+.player-team-label {
+    font-size: 0.85em;
+    font-weight: 400;
+    opacity: 0.8;
+    margin-left: auto;
+}
+.player-slot:empty {
+    background: #fff;
+    color: #bbb;
+    border: 1px solid #eee;
+}
+.player-slot:hover,
+.all-players-li.player-slot:hover {
+    background: var(--nba-blue);
+    color: var(--white);
 }
